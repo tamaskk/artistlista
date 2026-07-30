@@ -23,6 +23,9 @@ importers:
       '@artistlist/types':
         specifier: workspace:*
         version: link:../../packages/types
+      '@artistlist/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@upstash/ratelimit':
         specifier: ^2.0.8
         version: 2.0.8(@upstash/redis@1.38.0)
@@ -78,6 +81,9 @@ importers:
       '@artistlist/types':
         specifier: workspace:*
         version: link:../../packages/types
+      '@artistlist/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@upstash/ratelimit':
         specifier: ^2.0.8
         version: 2.0.8(@upstash/redis@1.38.0)
@@ -165,6 +171,19 @@ importers:
       vitest:
         specifier: ^4.1.10
         version: 4.1.10(@types/node@22.20.1)(vite@8.2.0(@types/node@22.20.1)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.23.1))
+
+  packages/ui:
+    dependencies:
+      react:
+        specifier: '>=19'
+        version: 19.2.8
+    devDependencies:
+      '@types/react':
+        specifier: ^19
+        version: 19.2.17
+      typescript:
+        specifier: ^5.8.0
+        version: 5.9.3
 
 packages:
 

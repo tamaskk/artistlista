@@ -1,7 +1,12 @@
 @import "tailwindcss";
 
+/* a közös @artistlist/ui csomag class-einek scannelése */
+@source "../../../../packages/ui/src/**/*.{ts,tsx}";
+
 @theme {
   --color-canvas: #e9ebfb;
+  --color-surface: #ffffff;
+  --color-fg: #0b0b0f;
   --color-ink: #0b0b0f;
   --color-ink-soft: #55556a;
   --color-muted: #8a8aa3;

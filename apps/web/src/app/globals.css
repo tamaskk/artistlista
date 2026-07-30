@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "maplibre-gl/dist/maplibre-gl.css";
 
+/* a közös @artistlist/ui csomag class-einek scannelése */
+@source "../../../../packages/ui/src/**/*.{ts,tsx}";
+
 @theme {
   --color-canvas: #e9ebfb;
   --color-surface: #ffffff;
