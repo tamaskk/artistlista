@@ -276,7 +276,7 @@ export function MapView({
           style={{ left: selectedPoint.x, top: selectedPoint.y }}
         >
           <div className="pin-glow pointer-events-none absolute left-0 top-0 h-[130px] w-[130px] rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.5)_0%,rgba(139,92,246,0.22)_45%,rgba(139,92,246,0)_70%)]" />
-          <div className="pointer-events-auto absolute bottom-[112px] left-0 w-[264px] -translate-x-1/2 rounded-2xl bg-white p-3 shadow-pop ring-1 ring-glow/15">
+          <div className="pointer-events-auto absolute bottom-[112px] left-0 w-[264px] -translate-x-1/2 rounded-2xl bg-surface p-3 shadow-pop ring-1 ring-glow/15">
             <div className="flex gap-3">
               <Thumb
                 src={selected.image}
@@ -309,7 +309,7 @@ export function MapView({
                 </div>
               </div>
             </div>
-            <div className="absolute -bottom-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-white" />
+            <div className="absolute -bottom-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 bg-surface" />
           </div>
         </div>
       )}
@@ -320,7 +320,7 @@ export function MapView({
           onClick={() => setModalGroup(null)}
         >
           <div
-            className="max-h-full w-[380px] overflow-hidden rounded-2xl bg-white shadow-pop"
+            className="max-h-full w-[380px] overflow-hidden rounded-2xl bg-surface shadow-pop"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-3 border-b border-line px-5 py-4">
@@ -333,7 +333,7 @@ export function MapView({
               <button
                 onClick={() => setModalGroup(null)}
                 aria-label="Bezárás"
-                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted hover:bg-chip hover:text-ink"
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted hover:bg-chip hover:text-fg"
               >
                 ✕
               </button>

@@ -84,7 +84,7 @@ export default async function ArtistsPage(props: {
               <Link
                 key={a.id}
                 href={`/eloadok/${a.slug}`}
-                className="flex items-center gap-4 rounded-card border border-line bg-white p-5 shadow-card transition hover:-translate-y-[3px] hover:shadow-card-hover"
+                className="flex items-center gap-4 rounded-card border border-line bg-surface p-5 shadow-card transition hover:-translate-y-[3px] hover:shadow-card-hover"
               >
                 <Thumb
                   src={a.avatar}

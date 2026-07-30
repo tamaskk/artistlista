@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ThemeToggle } from "./ThemeToggle";
 
 const ADMIN_URL = process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001";
 
@@ -23,8 +24,8 @@ export function Header({ active }: { active?: string }) {
               href={item.href}
               className={
                 active === item.href
-                  ? "border-b-2 border-ink pb-0.5 font-semibold text-ink"
-                  : "hover:text-ink"
+                  ? "border-b-2 border-ink pb-0.5 font-semibold text-fg"
+                  : "hover:text-fg"
               }
             >
               {item.label}
@@ -38,9 +39,10 @@ export function Header({ active }: { active?: string }) {
         ))}
       </nav>
       <div className="flex items-center gap-3.5">
+        <ThemeToggle />
         <a
           href={`${ADMIN_URL}/register`}
-          className="hidden text-sm font-medium text-ink-soft transition hover:text-ink sm:block"
+          className="hidden text-sm font-medium text-ink-soft transition hover:text-fg sm:block"
         >
           Előadóknak
         </a>

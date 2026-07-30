@@ -5,7 +5,7 @@ export function Skeleton({ className = "" }: { className?: string }) {
 /** Esemény-kártya töltő-állapota (shimmer). */
 export function EventCardSkeleton() {
   return (
-    <div className="overflow-hidden rounded-card border border-line bg-white shadow-card">
+    <div className="overflow-hidden rounded-card border border-line bg-surface shadow-card">
       <div className="skeleton h-[118px]" />
       <div className="flex flex-col gap-2 p-3.5">
         <div className="skeleton h-4 w-16 rounded-full" />

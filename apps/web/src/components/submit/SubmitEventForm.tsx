@@ -18,7 +18,7 @@ function topError(state: FormState): string | undefined {
 }
 
 const inputCls =
-  "w-full rounded-xl border border-line-strong bg-white px-3.5 py-2.5 text-[14px] outline-none transition focus:border-accent";
+  "w-full rounded-xl border border-line-strong bg-surface px-3.5 py-2.5 text-[14px] outline-none transition focus:border-accent";
 const labelCls = "mb-1.5 block text-[13px] font-semibold text-ink-soft";
 
 /** Ma (helyi idő) `YYYY-MM-DDT00:00` — a datetime-local `min`-je, hogy ne lehessen múltat választani. */
@@ -95,7 +95,7 @@ function SearchPicker({
         className={inputCls}
       />
       {open && results.length > 0 && (
-        <div className="absolute z-20 mt-1.5 max-h-56 w-full overflow-y-auto rounded-xl border border-line bg-white p-1.5 shadow-pop">
+        <div className="absolute z-20 mt-1.5 max-h-56 w-full overflow-y-auto rounded-xl border border-line bg-surface p-1.5 shadow-pop">
           {results.map((o) => (
             <button
               key={o.id}

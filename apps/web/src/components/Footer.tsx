@@ -70,11 +70,11 @@ function FooterCol({ title, links }: { title: string; links: [string, string][] 
       <div className="flex flex-col gap-2.5 text-sm">
         {links.map(([href, label]) =>
           href.startsWith("http") ? (
-            <a key={href} href={href} className="text-ink-soft hover:text-ink">
+            <a key={href} href={href} className="text-ink-soft hover:text-fg">
               {label}
             </a>
           ) : (
-            <Link key={href} href={href} className="text-ink-soft hover:text-ink">
+            <Link key={href} href={href} className="text-ink-soft hover:text-fg">
               {label}
             </Link>
           ),

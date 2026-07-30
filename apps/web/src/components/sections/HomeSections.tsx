@@ -133,7 +133,7 @@ export async function MostLiked() {
             </span>
             <Link
               href={`/eloadok/${topArtist.slug}`}
-              className="group relative flex flex-1 items-center gap-4 overflow-hidden rounded-card border border-line bg-white p-5 transition hover:-translate-y-[3px] hover:shadow-card-hover"
+              className="group relative flex flex-1 items-center gap-4 overflow-hidden rounded-card border border-line bg-surface p-5 transition hover:-translate-y-[3px] hover:shadow-card-hover"
             >
               {topArtist.avatar ? (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -188,7 +188,7 @@ export async function PopularVenues() {
           <Link
             key={v.id}
             href={`/helyszinek/${v.slug}`}
-            className="rounded-card border border-line bg-white p-5 shadow-card transition hover:-translate-y-[3px] hover:shadow-card-hover"
+            className="rounded-card border border-line bg-surface p-5 shadow-card transition hover:-translate-y-[3px] hover:shadow-card-hover"
           >
             <Thumb alt={v.name} label="helyszínfotó" className="mb-4 h-24 w-full rounded-xl" />
             <div className="text-[15px] font-semibold">{v.name}</div>
@@ -242,7 +242,7 @@ export function CtaBand() {
       <div className="relative flex shrink-0 items-center gap-3.5">
         <a
           href={`${ADMIN_URL}/register`}
-          className="rounded-full bg-white px-7 py-3.5 text-[15px] font-bold text-ink transition hover:bg-canvas"
+          className="rounded-full bg-surface px-7 py-3.5 text-[15px] font-bold text-fg transition hover:bg-canvas"
         >
           Ingyenes regisztráció
         </a>

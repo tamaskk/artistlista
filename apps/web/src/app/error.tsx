@@ -17,7 +17,7 @@ export default function Error({
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-canvas p-6">
-      <div className="w-full max-w-md rounded-[28px] bg-white p-8 text-center shadow-frame">
+      <div className="w-full max-w-md rounded-[28px] bg-surface p-8 text-center shadow-frame">
         <h1 className="font-display text-2xl font-bold tracking-tight">Hopp, valami elromlott</h1>
         <p className="mt-2 text-[14px] text-muted">
           Átmeneti hiba történt. Próbáld újra, vagy térj vissza a főoldalra.

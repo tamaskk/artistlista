@@ -25,7 +25,7 @@ export function EventCard({
       href={`/esemenyek/${event.slug}`}
       onMouseEnter={() => onHover?.(event.id)}
       onMouseLeave={() => onHover?.(null)}
-      className={`group block overflow-hidden rounded-card border bg-white shadow-card transition hover:-translate-y-[3px] hover:shadow-card-hover ${
+      className={`group block overflow-hidden rounded-card border bg-surface shadow-card transition hover:-translate-y-[3px] hover:shadow-card-hover ${
         promoted
           ? "border-[#E7B008] ring-2 ring-[#F5C518]/40"
           : highlighted
@@ -45,7 +45,7 @@ export function EventCard({
         </span>
         <div className="absolute right-2.5 top-2.5 flex flex-col items-end gap-1">
           {promoted && (
-            <span className="flex items-center gap-1 rounded-full bg-gradient-to-r from-[#F5C518] to-[#E7B008] px-2.5 py-1 text-[11px] font-bold text-ink shadow-sm">
+            <span className="flex items-center gap-1 rounded-full bg-gradient-to-r from-[#F5C518] to-[#E7B008] px-2.5 py-1 text-[11px] font-bold text-[#0b0b0f] shadow-sm">
               ★ Kiemelt
             </span>
           )}

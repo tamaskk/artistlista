@@ -162,7 +162,7 @@ export function HeroSearch({ fullHeight = false }: { fullHeight?: boolean }) {
                 </svg>
               </button>
               {sortOpen && (
-                <div className="absolute right-0 top-full z-20 mt-2 flex min-w-40 flex-col gap-1 rounded-2xl border border-line bg-white p-2 shadow-pop">
+                <div className="absolute right-0 top-full z-20 mt-2 flex min-w-40 flex-col gap-1 rounded-2xl border border-line bg-surface p-2 shadow-pop">
                   {(Object.keys(SORT_LABELS) as HeroFilters["sort"][]).map((s) => (
                     <button
                       key={s}

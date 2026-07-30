@@ -10,7 +10,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         >
           ArtistList
         </Link>
-        <div className="rounded-[28px] bg-white p-8 shadow-frame">{children}</div>
+        <div className="rounded-[28px] bg-surface p-8 shadow-frame">{children}</div>
         <p className="mt-5 text-center text-xs text-muted">
           Előadó vagy menedzsment vagy?{" "}
           <a

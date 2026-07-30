@@ -25,9 +25,18 @@ export const metadata: Metadata = {
     "Magyar előadók és fellépések egy helyen: koncertek, bulik térképen és listában — szűrhetően városra, dátumra, műfajra és árra.",
 };
 
+const THEME_SCRIPT = `(function(){try{var t=localStorage.getItem('theme');if(t!=='dark'&&t!=='light'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`;
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="hu" className={`${bricolage.variable} ${inter.variable}`}>
+    <html
+      lang="hu"
+      suppressHydrationWarning
+      className={`${bricolage.variable} ${inter.variable}`}
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body>
         <FavoritesProvider>{children}</FavoritesProvider>
         <Toaster />

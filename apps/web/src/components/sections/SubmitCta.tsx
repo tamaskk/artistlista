@@ -26,7 +26,7 @@ export function SubmitCta() {
             <div className="mt-6 flex flex-wrap items-center gap-3">
               <Link
                 href="/koncert-bekuldese"
-                className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-ink transition hover:bg-white/90"
+                className="rounded-full bg-surface px-6 py-3 text-sm font-semibold text-fg transition hover:bg-white/90"
               >
                 Koncert beküldése →
               </Link>

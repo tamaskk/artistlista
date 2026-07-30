@@ -3,6 +3,8 @@
 
 @theme {
   --color-canvas: #e9ebfb;
+  --color-surface: #ffffff;
+  --color-fg: #0b0b0f;
   --color-ink: #0b0b0f;
   --color-ink-soft: #4b4d5c;
   --color-muted: #71748a;
@@ -34,9 +36,37 @@ html {
 }
 
 body {
-  color: var(--color-ink);
+  color: var(--color-fg);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+}
+
+/* ── Sötét mód: a design-tokenek felülírása ──────────────────────────
+   fg = fő szöveg (világos), ink = sötét felület (gomb/badge) marad sötét,
+   surface = kártya, canvas = háttér. */
+[data-theme="dark"] {
+  --color-canvas: #0e0f16;
+  --color-surface: #191b24;
+  --color-fg: #f1f2f8;
+  --color-ink: #2a2c38; /* bg-ink gombok/badge-ek — kicsit világosabb a surface-nél */
+  --color-ink-soft: #c4c6d6;
+  --color-muted: #9296ac;
+  --color-faint: #6a6d84;
+  --color-line: #262838;
+  --color-line-strong: #33364a;
+  --color-chip: #21222d;
+  --color-accent: #7c74ff;
+  --color-accent-deep: #9a93ff;
+
+  --shadow-frame: 0 24px 80px rgba(0, 0, 0, 0.5);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-card-hover: 0 10px 26px rgba(0, 0, 0, 0.5);
+  --shadow-pop: 0 12px 36px rgba(0, 0, 0, 0.6);
+}
+
+/* színséma-jelzés a böngészőnek (form-elemek, scrollbar) */
+[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 /* placeholder-thumb: mock-szerű átlós csíkozás képek helyett */

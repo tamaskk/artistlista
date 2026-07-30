@@ -70,7 +70,7 @@ export function FilterBar({
             {filters.city}
             <button
               onClick={() => onChange({ ...filters, city: "" })}
-              className="font-normal text-faint hover:text-ink"
+              className="font-normal text-faint hover:text-fg"
               aria-label="Város törlése"
             >
               ✕
@@ -95,7 +95,7 @@ export function FilterBar({
               />
             </form>
             {cityMatches.length > 0 && (
-              <div className="absolute left-0 top-full z-20 mt-1.5 max-h-56 w-44 overflow-y-auto rounded-2xl border border-line bg-white p-1.5 shadow-pop">
+              <div className="absolute left-0 top-full z-20 mt-1.5 max-h-56 w-44 overflow-y-auto rounded-2xl border border-line bg-surface p-1.5 shadow-pop">
                 {cityMatches.map((c) => (
                   <button
                     key={c}
@@ -268,7 +268,7 @@ function Dropdown({
           <span
             role="button"
             tabIndex={0}
-            className="text-faint hover:text-ink"
+            className="text-faint hover:text-fg"
             onClick={(e) => {
               e.stopPropagation();
               onClear();
@@ -283,7 +283,7 @@ function Dropdown({
         )}
       </button>
       {open && (
-        <div className="absolute right-0 top-full z-20 mt-2 min-w-44 rounded-2xl border border-line bg-white shadow-pop">
+        <div className="absolute right-0 top-full z-20 mt-2 min-w-44 rounded-2xl border border-line bg-surface shadow-pop">
           {children(() => setOpen(false))}
         </div>
       )}

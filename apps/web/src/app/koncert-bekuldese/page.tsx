@@ -52,7 +52,7 @@ export default async function SubmitPage({
                 </p>
               </div>
               <form action={logoutFan}>
-                <button className="shrink-0 whitespace-nowrap text-[13px] font-semibold text-muted hover:text-ink">
+                <button className="shrink-0 whitespace-nowrap text-[13px] font-semibold text-muted hover:text-fg">
                   {user.name} · Kilépés
                 </button>
               </form>

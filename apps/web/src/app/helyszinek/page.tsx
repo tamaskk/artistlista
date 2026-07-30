@@ -23,7 +23,7 @@ export default async function VenuesPage() {
             <Link
               key={v.id}
               href={`/helyszinek/${v.slug}`}
-              className="rounded-card border border-line bg-white p-5 shadow-card transition hover:-translate-y-[3px] hover:shadow-card-hover"
+              className="rounded-card border border-line bg-surface p-5 shadow-card transition hover:-translate-y-[3px] hover:shadow-card-hover"
             >
               <div className="flex items-start justify-between gap-3">
                 <div>

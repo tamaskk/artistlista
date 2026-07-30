@@ -39,7 +39,7 @@ function Field({
         type={type}
         autoComplete={autoComplete}
         required
-        className={`w-full rounded-xl border bg-white px-3.5 py-2.5 text-[14px] outline-none transition focus:border-accent ${
+        className={`w-full rounded-xl border bg-surface px-3.5 py-2.5 text-[14px] outline-none transition focus:border-accent ${
           error ? "border-bad" : "border-line-strong"
         }`}
       />
