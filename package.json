@@ -1,0 +1,24 @@
+{
+  "name": "artistlist",
+  "private": true,
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "seed": "pnpm --filter @artistlist/database seed",
+    "seed:real": "pnpm --filter @artistlist/database seed:real",
+    "cleanup": "pnpm --filter @artistlist/database cleanup",
+    "web": "pnpm --filter web dev",
+    "admin": "pnpm --filter admin dev",
+    "dev:web": "pnpm --filter web dev",
+    "dev:admin": "pnpm --filter admin dev"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "^5.8.0"
+  },
+  "packageManager": "pnpm@10.34.5",
+  "engines": {
+    "node": ">=20"
+  }
+}
