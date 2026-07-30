@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MobileNav } from "./MobileNav";
 import { ThemeToggle } from "./ThemeToggle";
 
 const ADMIN_URL = process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001";
@@ -13,7 +14,7 @@ const nav = [
 
 export function Header({ active }: { active?: string }) {
   return (
-    <header className="flex items-center justify-between gap-6 border-b border-line pb-6">
+    <header className="relative flex items-center justify-between gap-4 border-b border-line pb-6">
       <Link href="/" className="font-display text-[26px] font-extrabold tracking-tight">
         ArtistList
       </Link>
@@ -48,10 +49,11 @@ export function Header({ active }: { active?: string }) {
         </a>
         <Link
           href="/koncert-bekuldese"
-          className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#26262e]"
+          className="hidden rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#26262e] sm:block"
         >
           Koncert beküldése
         </Link>
+        <MobileNav />
       </div>
     </header>
   );

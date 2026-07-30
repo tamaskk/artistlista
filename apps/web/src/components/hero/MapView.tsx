@@ -320,7 +320,7 @@ export function MapView({
           onClick={() => setModalGroup(null)}
         >
           <div
-            className="max-h-full w-[380px] overflow-hidden rounded-2xl bg-surface shadow-pop"
+            className="max-h-full w-[380px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl bg-surface shadow-pop"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between gap-3 border-b border-line px-5 py-4">
