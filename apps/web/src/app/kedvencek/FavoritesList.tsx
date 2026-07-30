@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { EventCard } from "@/components/EventCard";
+import { EventCardSkeletonGrid } from "@/components/Skeleton";
 import { useFavorites } from "@/components/favorites/FavoritesProvider";
 import type { PublicEventCard } from "@/lib/public-types";
 
@@ -25,7 +26,11 @@ export function FavoritesList() {
   }, [key, ready]);
 
   if (!ready || events === null) {
-    return <div className="mt-8 h-40 animate-pulse rounded-card bg-chip" />;
+    return (
+      <div className="mt-8">
+        <EventCardSkeletonGrid count={4} />
+      </div>
+    );
   }
   if (events.length === 0) {
     return (

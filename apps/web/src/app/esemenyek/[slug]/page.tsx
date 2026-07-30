@@ -7,6 +7,7 @@ import {
   formatTime,
 } from "@artistlist/types";
 import { PageFrame } from "@/components/PageFrame";
+import { CalendarButton } from "@/components/CalendarButton";
 import { EventCard } from "@/components/EventCard";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareButton } from "@/components/ShareButton";
@@ -209,12 +210,10 @@ export default async function EventPage(props: { params: Promise<{ slug: string 
                 )}
               </div>
             )}
-            <a
+            <CalendarButton
               href={`/api/events/${event.slug}/ics`}
               className="mt-3 block rounded-full border-[1.5px] border-line-strong py-3 text-center text-sm font-semibold transition hover:bg-chip"
-            >
-              Naptárba
-            </a>
+            />
           </div>
 
           {venue && (

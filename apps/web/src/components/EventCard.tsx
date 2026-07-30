@@ -43,16 +43,18 @@ export function EventCard({
         <span className="absolute left-2.5 top-2.5 rounded-full bg-ink/80 px-3 py-1 text-[11px] font-bold tracking-wide text-white">
           {formatDateBadge(event.startsAt)}
         </span>
-        {promoted && (
-          <span className="absolute right-2.5 top-2.5 flex items-center gap-1 rounded-full bg-gradient-to-r from-[#F5C518] to-[#E7B008] px-2.5 py-1 text-[11px] font-bold text-ink shadow-sm">
-            ★ Kiemelt
-          </span>
-        )}
-        {soldout && (
-          <span className="absolute right-2.5 top-2.5 rounded-full bg-[#FDF0DC] px-3 py-1 text-[11px] font-bold text-warn">
-            Telt ház
-          </span>
-        )}
+        <div className="absolute right-2.5 top-2.5 flex flex-col items-end gap-1">
+          {promoted && (
+            <span className="flex items-center gap-1 rounded-full bg-gradient-to-r from-[#F5C518] to-[#E7B008] px-2.5 py-1 text-[11px] font-bold text-ink shadow-sm">
+              ★ Kiemelt
+            </span>
+          )}
+          {soldout && (
+            <span className="rounded-full bg-[#FDF0DC] px-3 py-1 text-[11px] font-bold text-warn">
+              Telt ház
+            </span>
+          )}
+        </div>
         {cancelled && (
           <span className="absolute inset-0 flex items-center justify-center bg-white/60">
             <span className="rounded-full bg-bad px-4 py-1.5 text-xs font-bold text-white">

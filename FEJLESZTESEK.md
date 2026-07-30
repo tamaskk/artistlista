@@ -57,23 +57,6 @@ kedvencek, mock-fizetés, URL-only képfeltöltés, regex-keresés, egynyelvű.
 
 ---
 
-## 3. UI fejlesztések
-
-| # | Elem | Javaslat | Prioritás | Effort |
-|---|------|----------|-----------|--------|
-| I1 | Sötét mód | Rendszer-preferencia + kapcsoló; a design-tokenek (`@theme`) már készen állnak rá | P2 | M |
-| I2 | Skeleton-ök | Egységes skeleton a térkép/lista/kártyák töltésekor (most helyenként "Keresés…") | P2 | S |
-| I3 | Térkép-marker polish | Kiválasztott pin kiemelése, klaszter-buborék nagyobb sűrűségnél, smooth zoom a stack-modálból | P3 | M |
-| I4 | Event-kártya hierarchia | Ár/idő/műfaj tipográfiai rendezése; kiemelt (promo) kártya vizuális megkülönböztetése (arany szegély már van — finomítás) | P3 | S |
-| I5 | Előadó-oldal gazdagítás | Spotify/YouTube embed (a mezők már léteznek a sémában!), galéria, közelgő+múlt koncertek tabok | **P1** | M |
-| I6 | Helyszín-oldal | Beágyazott mini-térkép, közelgő koncertek, kapacitás/típus badge, útvonaltervezés (részben megvan) | P2 | S |
-| I7 | Mobil-first revízió | Térkép/lista váltó megvan; de a hero, szűrők, modálok mobil-finomhangolása | **P1** | M |
-| I8 | Micro-interakciók | Kedvenc-szív animáció, "hozzáadva a naptárhoz" toast, gomb-loading állapotok | P3 | S |
-| I9 | Konzisztens design-rendszer | A web és admin külön token-készlet — közös `packages/ui` kiemelése (Button/Card/Input) | P2 | L |
-| I10 | OG-képek | Dinamikus Open Graph kép event/előadó oldalhoz (`@vercel/og`) — szép megosztás | P2 | M |
-
----
-
 ## 4. Technikai fejlesztések
 
 ### 4.1 Tesztelés és CI — **P1, jelenleg NULLA**

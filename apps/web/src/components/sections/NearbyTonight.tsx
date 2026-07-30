@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { EventCard } from "@/components/EventCard";
+import { EventCardSkeletonGrid } from "@/components/Skeleton";
 import type { PublicEventCard } from "@/lib/public-types";
 
 type State = "idle" | "loading" | "denied" | "done";
@@ -63,10 +64,8 @@ export function NearbyTonight() {
       </div>
 
       {state === "loading" && (
-        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-64 animate-pulse rounded-card bg-chip" />
-          ))}
+        <div className="mt-6">
+          <EventCardSkeletonGrid count={4} />
         </div>
       )}
 
