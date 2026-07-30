@@ -10,6 +10,7 @@ import {
 } from "@artistlist/database";
 import { eventSchema, startOfToday, type ActionResult } from "@artistlist/types";
 import { canManageArtist, canManageEvent, requireUser } from "@/lib/session";
+import { notifyFollowersOfEvent } from "@/lib/notify";
 
 function parseEventForm(formData: FormData) {
   return eventSchema.safeParse({
@@ -169,7 +170,9 @@ async function setStatus(
 }
 
 export async function publishEvent(eventId: string): Promise<ActionResult> {
-  return setStatus(eventId, "published");
+  const r = await setStatus(eventId, "published");
+  if (r.ok) await notifyFollowersOfEvent(eventId);
+  return r;
 }
 export async function markSoldOut(eventId: string): Promise<ActionResult> {
   return setStatus(eventId, "soldout");

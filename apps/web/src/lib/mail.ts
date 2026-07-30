@@ -9,8 +9,6 @@ export async function sendMail(to: string, subject: string, text: string): Promi
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      // A domaint verifikálni kell a Resendben; addig az onboarding@resend.dev
-      // csak a fiók-tulajdonos címére küld. Prodban: MAIL_FROM=…@koncertlista.hu
       from: process.env.MAIL_FROM || "Koncertlista <onboarding@resend.dev>",
       to,
       subject,
@@ -18,5 +16,3 @@ export async function sendMail(to: string, subject: string, text: string): Promi
     }),
   }).catch((e) => console.error("[mail] küldési hiba:", e));
 }
-
-export const mailEnabled = () => !!process.env.RESEND_API_KEY;

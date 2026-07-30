@@ -20,6 +20,9 @@ const userSchema = new Schema(
     resetToken: { type: String },
     resetTokenExpires: { type: Date },
     status: { type: String, enum: ["active", "pending", "banned"], default: "active" },
+    // ── fiókos kedvencek + követés (eszközök közt szinkron) ──────────
+    savedEventSlugs: { type: [String], default: [] },
+    followedArtistIds: { type: [Schema.Types.ObjectId], ref: "Artist", default: [] },
   },
   { timestamps: true },
 );

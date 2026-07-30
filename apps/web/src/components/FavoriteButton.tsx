@@ -1,17 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { isFavorite, toggleFavorite } from "@/lib/favorites";
+import { useFavorites } from "./favorites/FavoritesProvider";
 
 export function FavoriteButton({ slug, className = "" }: { slug: string; className?: string }) {
-  const [saved, setSaved] = useState(false);
-
-  useEffect(() => {
-    setSaved(isFavorite(slug));
-    const onChange = () => setSaved(isFavorite(slug));
-    window.addEventListener("favorites-changed", onChange);
-    return () => window.removeEventListener("favorites-changed", onChange);
-  }, [slug]);
+  const { isFav, toggleFav } = useFavorites();
+  const saved = isFav(slug);
 
   return (
     <button
@@ -19,7 +12,7 @@ export function FavoriteButton({ slug, className = "" }: { slug: string; classNa
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        setSaved(toggleFavorite(slug));
+        toggleFav(slug);
       }}
       className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-chip transition hover:bg-canvas ${className}`}
     >

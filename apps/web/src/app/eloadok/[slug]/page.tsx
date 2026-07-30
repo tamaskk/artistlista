@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { SOCIAL_KEYS } from "@artistlist/types";
 import { PageFrame } from "@/components/PageFrame";
 import { EventCard } from "@/components/EventCard";
+import { FollowButton } from "@/components/FollowButton";
 import { Thumb } from "@/components/Thumb";
 import { getArtistBySlug } from "@/lib/data";
 
@@ -75,7 +76,10 @@ export default async function ArtistPage(props: { params: Promise<{ slug: string
 
       <div className="mt-14 grid gap-10 lg:grid-cols-[1.6fr_1fr]">
         <div>
-          <h1 className="font-display text-[32px] font-bold tracking-tight">{artist.name}</h1>
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <h1 className="font-display text-[32px] font-bold tracking-tight">{artist.name}</h1>
+            <FollowButton artistId={String(artist._id)} />
+          </div>
           <div className="mt-2 flex flex-wrap gap-2">
             {artist.genres.map((g: string) => (
               <Link

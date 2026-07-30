@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Inter } from "next/font/google";
+import { FavoritesProvider } from "@/components/favorites/FavoritesProvider";
 import "./globals.css";
 
 const bricolage = Bricolage_Grotesque({
@@ -24,7 +25,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="hu" className={`${bricolage.variable} ${inter.variable}`}>
-      <body>{children}</body>
+      <body>
+        <FavoritesProvider>{children}</FavoritesProvider>
+      </body>
     </html>
   );
 }

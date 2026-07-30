@@ -30,6 +30,8 @@ const eventSchema = new Schema(
     description: { type: String, default: "" },
     image: { type: String, default: "" },
     cancelReason: { type: String, default: "" }, // lemondás indoka (publikus)
+    followersNotifiedAt: { type: Date }, // követők értesítve (egyszeri)
+    reminderSentAt: { type: Date }, // kedvenc-emlékeztető kiküldve (egyszeri)
     status: {
       type: String,
       enum: ["draft", "pending", "published", "cancelled", "soldout"],

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { Artist, Event, connectDB } from "@artistlist/database";
 import type { ActionResult } from "@artistlist/types";
 import { requireRole, requireUser, type SessionUser } from "@/lib/session";
+import { notifyFollowersOfEvent } from "@/lib/notify";
 
 /** Jóváhagyhatja-e a user az adott pending eseményt? (útvonal szerint) */
 function canApproveEvent(
@@ -44,6 +45,8 @@ export async function approveEvent(eventId: string): Promise<ActionResult> {
     { _id: { $in: ev.artistIds }, status: "pending" },
     { $set: { status: "published" } },
   );
+  // headliner követőinek értesítése (egyszer)
+  await notifyFollowersOfEvent(eventId);
   revalidatePath("/jovahagyas");
   revalidatePath("/esemenyek");
   return { ok: true };
