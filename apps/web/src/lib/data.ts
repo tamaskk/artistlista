@@ -254,6 +254,7 @@ export async function getArtistCatalog(params: { q?: string; genre?: string; let
     shortBio: a.shortBio ?? "",
     homeCity: a.homeCity ?? "",
     avatar: a.images?.avatar ?? "",
+    verified: !!(a as { verified?: boolean }).verified,
   }));
 }
 

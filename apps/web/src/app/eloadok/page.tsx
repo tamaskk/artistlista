@@ -3,6 +3,7 @@ import Link from "next/link";
 import { GENRES } from "@artistlist/types";
 import { PageFrame } from "@/components/PageFrame";
 import { Thumb } from "@/components/Thumb";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { getArtistCatalog } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
@@ -93,7 +94,10 @@ export default async function ArtistsPage(props: {
                   className="h-16 w-16 shrink-0 rounded-full"
                 />
                 <div className="min-w-0">
-                  <div className="truncate text-[15px] font-semibold">{a.name}</div>
+                  <div className="flex items-center gap-1.5 truncate text-[15px] font-semibold">
+                    <span className="truncate">{a.name}</span>
+                    {a.verified && <VerifiedBadge size={16} />}
+                  </div>
                   <div className="truncate text-xs text-muted">
                     {a.genres.join(" · ")}
                     {a.homeCity ? ` · ${a.homeCity}` : ""}

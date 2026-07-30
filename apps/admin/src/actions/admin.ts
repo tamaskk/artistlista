@@ -53,6 +53,19 @@ export async function toggleArtistFeatured(artistId: string): Promise<ActionResu
   return { ok: true };
 }
 
+/** Kék pipa be/ki — hivatalos előadó-profil (superadmin). */
+export async function toggleArtistVerified(artistId: string): Promise<ActionResult> {
+  await requireRole("SUPER_ADMIN");
+  await connectDB();
+  const artist = await Artist.findById(artistId);
+  if (!artist) return { ok: false, error: "Nem található." };
+  (artist as any).verified = !(artist as any).verified;
+  await artist.save();
+  revalidatePath("/eloadok");
+  revalidatePath(`/eloadok/${artistId}/szerkesztes`);
+  return { ok: true };
+}
+
 export async function toggleEventFeatured(eventId: string): Promise<ActionResult> {
   await requireRole("SUPER_ADMIN");
   await connectDB();

@@ -1,5 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import { Artist, connectDB } from "@artistlist/database";
+import { toggleArtistVerified } from "@/actions/admin";
 import { submitArtistForReview, updateArtistTab } from "@/actions/artists";
 import { ArtistForm } from "@/components/ArtistForm";
 import { PageHeader } from "@/components/PageHeader";
@@ -27,6 +28,26 @@ export default async function EditArtistPage(props: { params: Promise<{ id: stri
         action={
           <div className="flex items-center gap-3">
             <ArtistStatusBadge status={artist.status as never} />
+            {user.role === "SUPER_ADMIN" && (
+              <form
+                action={async () => {
+                  "use server";
+                  await toggleArtistVerified(id);
+                }}
+              >
+                <button
+                  className={`rounded-full border px-4 py-2 text-[13px] font-semibold transition ${
+                    (artist as { verified?: boolean }).verified
+                      ? "border-[#1D9BF0] text-[#1D9BF0]"
+                      : "border-line-strong hover:border-accent hover:text-accent"
+                  }`}
+                >
+                  {(artist as { verified?: boolean }).verified
+                    ? "✓ Ellenőrzött — levétel"
+                    : "Ellenőrzés (kék pipa)"}
+                </button>
+              </form>
+            )}
             {artist.status === "draft" && (
               <form action={async () => {
                   "use server";

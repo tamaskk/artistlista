@@ -33,6 +33,7 @@ const artistSchema = new Schema(
       default: "draft",
     },
     featured: { type: Boolean, default: false },
+    verified: { type: Boolean, default: false }, // hivatalos, superadmin által ellenőrzött profil (kék pipa)
     stats: {
       followers: { type: Number, default: 0 },
       views30d: { type: Number, default: 0 },

@@ -89,6 +89,12 @@ Külön indítás: `npm run web` / `npm run admin`.
 - **Geo-adat denormalizálva** az eseményen (location/city/venueName/genres); helyszín-/előadó-változáskor sync-helperek frissítik.
 - **Seed:** a scriptek betöltik a gyökér `.env`-et, így a `MONGODB_URI` szerinti (akár Atlas) DB-re futnak.
 
+## Nyilvános API & beágyazás
+
+- **Read-only API** (CORS-nyitott, rate-limitelt): `GET /api/v1/events?city=&genre=&limit=` és `GET /api/v1/artists/<slug>` — stabil JSON partnereknek.
+- **Beágyazható widget**: `‹iframe src="https://koncertlista.hu/embed/eloado/<slug>"›` — az előadó következő koncertjei bárhonnan iframe-elhetők (előadó-oldalon „Beágyazás" kód-másoló).
+- **Naptár-feed**: belépve a /kedvencek oldalon egy `webcal://…/api/calendar/<token>` URL — a mentett események előfizethetők Google/Apple Naptárba.
+
 ## Deploy
 
 Lásd a **[DEPLOY.md](./DEPLOY.md)** fájlt (Vercel + MongoDB Atlas + domain + env, lépésről lépésre).

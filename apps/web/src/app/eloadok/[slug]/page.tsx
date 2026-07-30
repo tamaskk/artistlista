@@ -5,11 +5,15 @@ import { SOCIAL_KEYS } from "@artistlist/types";
 import { PageFrame } from "@/components/PageFrame";
 import { EventCard } from "@/components/EventCard";
 import { FollowButton } from "@/components/FollowButton";
+import { EmbedSnippet } from "@/components/EmbedSnippet";
 import { ShareButton } from "@/components/ShareButton";
 import { Thumb } from "@/components/Thumb";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { getArtistBySlug } from "@/lib/data";
 
 export const revalidate = 60;
+
+const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || "http://localhost:3000";
 
 const SOCIAL_LABELS: Record<string, string> = {
   website: "Weboldal",
@@ -78,7 +82,10 @@ export default async function ArtistPage(props: { params: Promise<{ slug: string
       <div className="mt-14 grid gap-10 lg:grid-cols-[1.6fr_1fr]">
         <div>
           <div className="flex flex-wrap items-center justify-between gap-4">
-            <h1 className="font-display text-[32px] font-bold tracking-tight">{artist.name}</h1>
+            <h1 className="flex items-center gap-2 font-display text-[32px] font-bold tracking-tight">
+              {artist.name}
+              {artist.verified && <VerifiedBadge size={22} />}
+            </h1>
             <div className="flex items-center gap-2">
               <ShareButton title={artist.name} path={`/eloadok/${artist.slug}`} />
               <FollowButton artistId={String(artist._id)} />
@@ -184,6 +191,7 @@ export default async function ArtistPage(props: { params: Promise<{ slug: string
               </div>
             </div>
           </div>
+          <EmbedSnippet webUrl={WEB_URL} slug={artist.slug} name={artist.name} />
         </aside>
       </div>
 
