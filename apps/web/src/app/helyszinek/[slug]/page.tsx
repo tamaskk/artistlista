@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { VENUE_TYPES } from "@artistlist/types";
 import { PageFrame } from "@/components/PageFrame";
 import { EventCard } from "@/components/EventCard";
+import { ShareButton } from "@/components/ShareButton";
 import { Thumb } from "@/components/Thumb";
 import { getVenueBySlug } from "@/lib/data";
 
@@ -54,16 +55,19 @@ export default async function VenuePage(props: { params: Promise<{ slug: string 
             className="h-full w-full"
           />
         </div>
-        <div className="mt-6 flex flex-wrap items-center gap-3">
-          <h1 className="font-display text-[32px] font-bold tracking-tight">{venue.name}</h1>
-          <span className="rounded-full bg-chip px-3.5 py-1.5 text-xs font-semibold text-ink-soft">
-            {typeLabel}
-          </span>
-          {venue.capacity && (
-            <span className="rounded-full border border-line px-3.5 py-1.5 text-xs text-muted">
-              {new Intl.NumberFormat("hu-HU").format(venue.capacity)} fő
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 className="font-display text-[32px] font-bold tracking-tight">{venue.name}</h1>
+            <span className="rounded-full bg-chip px-3.5 py-1.5 text-xs font-semibold text-ink-soft">
+              {typeLabel}
             </span>
-          )}
+            {venue.capacity && (
+              <span className="rounded-full border border-line px-3.5 py-1.5 text-xs text-muted">
+                {new Intl.NumberFormat("hu-HU").format(venue.capacity)} fő
+              </span>
+            )}
+          </div>
+          <ShareButton title={venue.name} path={`/helyszinek/${venue.slug}`} />
         </div>
         <div className="mt-2 text-[15px] text-muted">
           {venue.address.zip} {venue.address.city}, {venue.address.street}
@@ -76,7 +80,34 @@ export default async function VenuePage(props: { params: Promise<{ slug: string 
           >
             Útvonaltervezés →
           </a>
+          {venue.website && (
+            <>
+              {" · "}
+              <a
+                href={venue.website}
+                target="_blank"
+                rel="noopener"
+                className="font-semibold text-accent hover:text-accent-deep"
+              >
+                Weboldal ↗
+              </a>
+            </>
+          )}
         </div>
+
+        {/* mini-térkép (ingyenes OSM-embed, kulcs nélkül) */}
+        <iframe
+          title={`Térkép — ${venue.name}`}
+          loading="lazy"
+          className="mt-5 h-[240px] w-full rounded-2xl border border-line"
+          src={`https://www.openstreetmap.org/export/embed.html?bbox=${
+            venue.location.coordinates[0] - 0.012
+          }%2C${venue.location.coordinates[1] - 0.008}%2C${
+            venue.location.coordinates[0] + 0.012
+          }%2C${venue.location.coordinates[1] + 0.008}&layer=mapnik&marker=${
+            venue.location.coordinates[1]
+          }%2C${venue.location.coordinates[0]}`}
+        />
       </div>
 
       <section className="mt-12">

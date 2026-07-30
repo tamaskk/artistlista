@@ -241,6 +241,20 @@ export function MapView({
     }
   }, [hoveredId, selectedId, ready, events]);
 
+  // kiválasztott eseményre finom ráközelítés (smooth flyTo)
+  useEffect(() => {
+    if (!ready || !selectedId) return;
+    const map = mapRef.current;
+    const ev = events.find((e) => e.id === selectedId);
+    if (!map || !ev) return;
+    map.flyTo({
+      center: [ev.lng, ev.lat],
+      zoom: Math.max(map.getZoom(), 11.5),
+      duration: 700,
+      essential: true,
+    });
+  }, [selectedId, ready, events]);
+
   const selected = selectedId ? events.find((e) => e.id === selectedId) : null;
   const selectedPoint =
     selected && mapRef.current ? mapRef.current.project([selected.lng, selected.lat]) : null;
