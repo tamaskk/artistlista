@@ -17,10 +17,6 @@ jogi oldalak, éles domain + Atlas. Ez már self-serve termék.
 **A 3 legnagyobb hiányzó láb (ezek nélkül nem skálázódik):**
 1. **Valós fizetés** a kiemeléshez (most csak "megvásárolva" státusz, pénzmozgás nincs).
 
-**A 3 legnagyobb technikai kockázat:**
-1. **Nincs teszt** és **nincs CI** — minden deploy vakrepülés.
-2. **Nincs observability** (hibakövetés, analitika) — ha eltörik prodban, nem látod.
-3. **Nincs rate-limit** a publikus végpontokon (submit, newsletter, geokód) — spam/abuse nyitva.
 
 **A legnagyobb termék-lehetőség (EXPANSION):** a "passzív katalógus" →
 **"személyes koncertasszisztens"**: kövess előadót → értesítést kapsz, ha

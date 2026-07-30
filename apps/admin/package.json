@@ -11,6 +11,8 @@
   "dependencies": {
     "@artistlist/database": "workspace:*",
     "@artistlist/types": "workspace:*",
+    "@upstash/ratelimit": "^2.0.8",
+    "@upstash/redis": "^1.38.0",
     "bcryptjs": "^3.0.2",
     "mongoose": "^8.16.0",
     "next": "^15.5.0",

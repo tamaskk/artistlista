@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import {
   Artist,
@@ -12,6 +13,7 @@ import {
 import { submitEventSchema, type ActionResult } from "@artistlist/types";
 import { getSessionUser } from "@/lib/session";
 import { cityCentroid } from "@/lib/geo";
+import { allow, ipFrom } from "@/lib/ratelimit";
 
 export async function submitEvent(
   _prev: ActionResult | null,
@@ -19,6 +21,9 @@ export async function submitEvent(
 ): Promise<ActionResult> {
   const user = await getSessionUser();
   if (!user) return { ok: false, error: "Jelentkezz be a beküldéshez." };
+  if (!(await allow("submit", ipFrom(await headers())))) {
+    return { ok: false, error: "Túl sok beküldés rövid idő alatt — próbáld pár perc múlva." };
+  }
 
   const parsed = submitEventSchema.safeParse({
     title: formData.get("title"),

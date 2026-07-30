@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+
+      - name: Typecheck (web)
+        run: pnpm --filter web exec tsc --noEmit
+      - name: Typecheck (admin)
+        run: pnpm --filter admin exec tsc --noEmit
+
+      - name: Unit tests
+        run: pnpm --filter @artistlist/types test
+
+      - name: Build
+        run: pnpm build
+        env:
+          MONGODB_URI: mongodb://localhost:27017/citest
+          AUTH_SECRET: ci-dummy-secret-not-used-in-prod
+          NEXT_PUBLIC_WEB_URL: http://localhost:3000
+          NEXT_PUBLIC_ADMIN_URL: http://localhost:3001

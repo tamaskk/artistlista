@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { Venue, connectDB, uniqueSlug } from "@artistlist/database";
 import { CITIES, venueSchema, type ActionResult } from "@artistlist/types";
 import { requireUser } from "@/lib/session";
+import { allow } from "@/lib/ratelimit";
 
 /** Javaslatok a helyszín-űrlap dropdownjaihoz (meglévő adatokból). */
 export async function getVenueSuggestions(): Promise<{
@@ -43,7 +44,10 @@ export interface PlaceHit {
  * kulcs nélkül. Globális (külföldi helyszín is jön: SK/RO), magyar nyelvvel.
  */
 export async function searchPlaces(query: string): Promise<ActionResult<PlaceHit[]>> {
-  await requireUser();
+  const user = await requireUser();
+  if (!(await allow("places", user.id))) {
+    return { ok: false, error: "Túl sok keresés — lassíts egy kicsit." };
+  }
   const q = query.trim();
   if (q.length < 3) return { ok: true, data: [] };
   try {
@@ -137,7 +141,10 @@ export async function createVenue(
 export async function geocodeAddress(
   query: string,
 ): Promise<ActionResult<{ lng: number; lat: number; display: string }[]>> {
-  await requireUser();
+  const user = await requireUser();
+  if (!(await allow("geocode", user.id))) {
+    return { ok: false, error: "Túl sok geokódolás — lassíts egy kicsit." };
+  }
   if (query.trim().length < 3) return { ok: true, data: [] };
   try {
     const url = `https://nominatim.openstreetmap.org/search?format=json&countrycodes=hu&limit=5&q=${encodeURIComponent(query)}`;
