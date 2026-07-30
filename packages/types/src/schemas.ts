@@ -55,6 +55,20 @@ export const registerFanSchema = z.object({
   password: z.string().min(8, "Legalább 8 karakter"),
 });
 
+export const forgotPasswordSchema = z.object({
+  email: z.string().trim().toLowerCase().email("Érvényes email címet adj meg"),
+});
+
+export const resetPasswordSchema = z.object({
+  token: z.string().min(10, "Érvénytelen token"),
+  password: z.string().min(8, "Legalább 8 karakter"),
+});
+
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1, "Add meg a jelenlegi jelszavad"),
+  newPassword: z.string().min(8, "Legalább 8 karakter"),
+});
+
 export const inviteMemberSchema = z.object({
   email: z.string().trim().toLowerCase().email("Érvényes email címet adj meg"),
 });

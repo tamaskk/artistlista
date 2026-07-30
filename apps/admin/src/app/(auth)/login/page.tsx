@@ -8,8 +8,11 @@ import { Field, PrimaryButton, inputCls } from "@/components/ui";
 export default function LoginPage() {
   const [state, formAction, pending] = useActionState(loginAction, null);
   const [justRegistered, setJustRegistered] = useState(false);
+  const [justReset, setJustReset] = useState(false);
   useEffect(() => {
-    setJustRegistered(new URLSearchParams(window.location.search).get("pending") === "1");
+    const p = new URLSearchParams(window.location.search);
+    setJustRegistered(p.get("pending") === "1");
+    setJustReset(p.get("reset") === "1");
   }, []);
 
   return (
@@ -19,6 +22,11 @@ export default function LoginPage() {
         <div className="mb-4 rounded-xl bg-ok/10 px-4 py-3 text-sm font-medium text-ok">
           Regisztráció beküldve! A fiókod jóváhagyásra vár — a superadmin megerősítése után tudsz
           belépni.
+        </div>
+      )}
+      {justReset && (
+        <div className="mb-4 rounded-xl bg-ok/10 px-4 py-3 text-sm font-medium text-ok">
+          Jelszavad frissítve — jelentkezz be az új jelszóval.
         </div>
       )}
       <form action={formAction} className="flex flex-col gap-4">

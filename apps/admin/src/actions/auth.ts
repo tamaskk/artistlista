@@ -13,11 +13,15 @@ import {
 } from "@artistlist/database";
 import {
   acceptInviteSchema,
+  changePasswordSchema,
+  forgotPasswordSchema,
   registerArtistSchema,
   registerManagerSchema,
+  resetPasswordSchema,
   type ActionResult,
 } from "@artistlist/types";
 import { signIn } from "@/auth";
+import { requireUser } from "@/lib/session";
 import { mailEnabled, sendMail } from "@/lib/mail";
 
 const ADMIN_URL = () => process.env.NEXTAUTH_URL || "http://localhost:3001";
@@ -225,6 +229,79 @@ export async function loginAction(
     return { ok: false, error: "Hibás email vagy jelszó." };
   }
   redirect("/vezerlopult");
+}
+
+export async function requestPasswordReset(
+  _prev: ActionResult | null,
+  formData: FormData,
+): Promise<ActionResult> {
+  const parsed = forgotPasswordSchema.safeParse({ email: formData.get("email") });
+  if (!parsed.success) return fieldErrors(parsed.error);
+  await connectDB();
+  const user = await User.findOne({ email: parsed.data.email });
+  if (user) {
+    const token = crypto.randomBytes(24).toString("hex");
+    await User.updateOne(
+      { _id: user._id },
+      { $set: { resetToken: token, resetTokenExpires: new Date(Date.now() + 3600 * 1000) } },
+    );
+    await sendMail(
+      user.email,
+      "Jelszó-visszaállítás — Koncertlista",
+      `Kattints a linkre az új jelszó beállításához (1 óráig érvényes):\n` +
+        `${ADMIN_URL()}/reset-password?token=${token}\n\n` +
+        `Ha nem te kérted, hagyd figyelmen kívül ezt a levelet.`,
+    );
+  }
+  // Mindig sikeres — nem áruljuk el, létezik-e a fiók (enumeration-védelem).
+  return { ok: true };
+}
+
+export async function resetPassword(
+  _prev: ActionResult | null,
+  formData: FormData,
+): Promise<ActionResult> {
+  const parsed = resetPasswordSchema.safeParse({
+    token: formData.get("token"),
+    password: formData.get("password"),
+  });
+  if (!parsed.success) return fieldErrors(parsed.error);
+  await connectDB();
+  const user = await User.findOne({
+    resetToken: parsed.data.token,
+    resetTokenExpires: { $gte: new Date() },
+  });
+  if (!user) return { ok: false, error: "A link érvénytelen vagy lejárt — kérj újat." };
+  await User.updateOne(
+    { _id: user._id },
+    {
+      $set: { passwordHash: bcrypt.hashSync(parsed.data.password, 10) },
+      $unset: { resetToken: 1, resetTokenExpires: 1 },
+    },
+  );
+  redirect("/login?reset=1");
+}
+
+export async function changePassword(
+  _prev: ActionResult | null,
+  formData: FormData,
+): Promise<ActionResult> {
+  const sessionUser = await requireUser();
+  const parsed = changePasswordSchema.safeParse({
+    currentPassword: formData.get("currentPassword"),
+    newPassword: formData.get("newPassword"),
+  });
+  if (!parsed.success) return fieldErrors(parsed.error);
+  await connectDB();
+  const user = await User.findById(sessionUser.id);
+  if (!user?.passwordHash || !bcrypt.compareSync(parsed.data.currentPassword, user.passwordHash)) {
+    return { ok: false, fieldErrors: { currentPassword: ["A jelenlegi jelszó hibás"] } };
+  }
+  await User.updateOne(
+    { _id: user._id },
+    { $set: { passwordHash: bcrypt.hashSync(parsed.data.newPassword, 10) } },
+  );
+  return { ok: true };
 }
 
 export async function logoutAction(): Promise<void> {

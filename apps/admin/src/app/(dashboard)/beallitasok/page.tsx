@@ -1,5 +1,6 @@
 import { Organization, connectDB } from "@artistlist/database";
 import { PageHeader } from "@/components/PageHeader";
+import { PasswordChangeForm } from "@/components/PasswordChangeForm";
 import { Card, inputCls } from "@/components/ui";
 import { requireUser } from "@/lib/session";
 
@@ -27,9 +28,7 @@ export default async function SettingsPage() {
             <label className="text-xs font-semibold text-ink-soft">E-mail</label>
             <input defaultValue={user.email} disabled className={`${inputCls} opacity-70`} />
           </div>
-          <p className="text-[12.5px] text-muted">
-            Név-/jelszómódosítás és fióktörlés a v1-ben — addig írj a hello@artistlist.hu címre.
-          </p>
+          <PasswordChangeForm />
         </Card>
         {org && (
           <Card className="flex flex-col gap-4 p-6">
