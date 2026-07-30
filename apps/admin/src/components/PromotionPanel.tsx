@@ -48,6 +48,40 @@ export function PromotionPanel({
         feljebb a listában.
       </p>
 
+      {/* Előnézet: így fog kinézni a kártya kiemelten */}
+      <div className="mb-5 rounded-2xl border border-line bg-chip/40 p-4">
+        <div className="mb-2.5 text-[11.5px] font-semibold uppercase tracking-wider text-muted">
+          Így fog kinézni
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="w-40 shrink-0 overflow-hidden rounded-xl border-2 border-[#E7B008] bg-white ring-2 ring-[#F5C518]/40">
+            <div className="relative h-16 bg-gradient-to-br from-[#dfe2f4] to-[#ebedf9]">
+              <span className="absolute left-1.5 top-1.5 rounded-full bg-ink/80 px-2 py-0.5 text-[9px] font-bold text-white">
+                JÚL 31
+              </span>
+              <span className="absolute right-1.5 top-1.5 rounded-full bg-gradient-to-r from-[#F5C518] to-[#E7B008] px-2 py-0.5 text-[9px] font-bold text-[#0b0b0f]">
+                ★ Kiemelt
+              </span>
+            </div>
+            <div className="p-2">
+              <div className="h-2 w-3/4 rounded bg-line-strong" />
+              <div className="mt-1.5 h-2 w-1/2 rounded bg-line" />
+            </div>
+          </div>
+          <ul className="space-y-1 text-[12.5px] text-ink-soft">
+            <li>
+              • A <strong>lista tetején</strong> jelenik meg
+            </li>
+            <li>
+              • A térképen <strong>arany pinnel</strong> + ★ koronával
+            </li>
+            <li>
+              • „★ Kiemelt" jelzés a kártyán
+            </li>
+          </ul>
+        </div>
+      </div>
+
       {activeTier > 0 && (
         <div className="mb-5 flex items-center justify-between rounded-xl border border-[#F5C518]/50 bg-[#F5C518]/8 px-4 py-3">
           <div className="text-[13.5px]">
