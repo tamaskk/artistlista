@@ -124,6 +124,28 @@ export function FilterBar({
             Város
           </button>
         )}
+
+        {/* dátum gyorschipek */}
+        <button
+          onClick={() => onChange({ ...filters, date: filters.date === "ma" ? "honap" : "ma" })}
+          className={`h-[38px] rounded-full border-[1.5px] px-4 text-[13.5px] font-medium transition ${
+            filters.date === "ma" ? "border-accent text-accent" : "border-line-strong hover:bg-chip"
+          }`}
+        >
+          Ma
+        </button>
+        <button
+          onClick={() =>
+            onChange({ ...filters, date: filters.date === "hetvege" ? "honap" : "hetvege" })
+          }
+          className={`h-[38px] rounded-full border-[1.5px] px-4 text-[13.5px] font-medium transition ${
+            filters.date === "hetvege"
+              ? "border-accent text-accent"
+              : "border-line-strong hover:bg-chip"
+          }`}
+        >
+          Hétvége
+        </button>
       </div>
 
       <div className="flex flex-wrap items-center gap-2.5">

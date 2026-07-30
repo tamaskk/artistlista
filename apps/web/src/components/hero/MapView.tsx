@@ -111,10 +111,12 @@ export function MapView({
   events,
   hoveredId,
   onBboxChange,
+  onSelect,
 }: {
   events: PublicEventCard[];
   hoveredId: string | null;
   onBboxChange: (bbox: [number, number, number, number]) => void;
+  onSelect?: (id: string | null) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MLMap | null>(null);
@@ -130,6 +132,13 @@ export function MapView({
   selectRef.current = setSelectedId;
   const modalRef = useRef(setModalGroup);
   modalRef.current = setModalGroup;
+  const onSelectRef = useRef(onSelect);
+  onSelectRef.current = onSelect;
+
+  // kiválasztás jelzése a szülőnek (lista → oda-scroll + kiemelés)
+  useEffect(() => {
+    onSelectRef.current?.(selectedId);
+  }, [selectedId]);
 
   /** Markerek teljes újraépítése az `events` propból (azonos koord → legyező). */
   const rebuildMarkers = useCallback((list: PublicEventCard[]) => {

@@ -1,11 +1,25 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useActionState, useCallback, useEffect, useRef, useState } from "react";
 import { GENRES, type ActionResult } from "@artistlist/types";
 import { submitEvent } from "@/actions/submit";
 
 type FormState = ActionResult | null;
 type Option = { id: string; name: string; sub?: string };
+
+const DRAFT_KEY = "submit-draft";
+const TEXT_FIELDS = [
+  "title",
+  "startsAt",
+  "priceMin",
+  "ticketUrl",
+  "image",
+  "description",
+  "newArtistName",
+  "newVenueName",
+  "newVenueCity",
+];
 
 function fieldError(state: FormState, key: string): string | undefined {
   if (state && "fieldErrors" in state && state.fieldErrors) {
@@ -117,7 +131,7 @@ function SearchPicker({
   );
 }
 
-export function SubmitEventForm() {
+export function SubmitEventForm({ loggedIn = true }: { loggedIn?: boolean }) {
   const [state, action, pending] = useActionState<FormState, FormData>(submitEvent, null);
 
   const [artist, setArtist] = useState<Option | null>(null);
@@ -126,8 +140,74 @@ export function SubmitEventForm() {
   const [venueNew, setVenueNew] = useState(false);
   const [priceKind, setPriceKind] = useState("unknown");
 
+  const formRef = useRef<HTMLFormElement>(null);
+  const [hydrated, setHydrated] = useState(false);
+
+  const saveDraft = useCallback(() => {
+    const f = formRef.current;
+    if (!f) return;
+    const fields: Record<string, string> = {};
+    for (const n of TEXT_FIELDS) {
+      const el = f.elements.namedItem(n) as HTMLInputElement | null;
+      if (el) fields[n] = el.value;
+    }
+    const genres = Array.from(
+      f.querySelectorAll<HTMLInputElement>('input[name="newArtistGenres"]:checked'),
+    ).map((x) => x.value);
+    try {
+      localStorage.setItem(
+        DRAFT_KEY,
+        JSON.stringify({ artist, artistNew, venue, venueNew, priceKind, fields, genres }),
+      );
+    } catch {
+      /* noop */
+    }
+  }, [artist, artistNew, venue, venueNew, priceKind]);
+
+  // vázlat visszaállítása belépés utáni visszatéréskor (egyszer)
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (raw) {
+        const d = JSON.parse(raw);
+        if (d.artist) setArtist(d.artist);
+        if (d.artistNew) setArtistNew(true);
+        if (d.venue) setVenue(d.venue);
+        if (d.venueNew) setVenueNew(true);
+        if (d.priceKind) setPriceKind(d.priceKind);
+        setTimeout(() => {
+          const f = formRef.current;
+          if (!f) return;
+          for (const [n, v] of Object.entries(d.fields ?? {})) {
+            const el = f.elements.namedItem(n) as HTMLInputElement | null;
+            if (el && typeof v === "string") el.value = v;
+          }
+          for (const g of d.genres ?? []) {
+            const el = f.querySelector<HTMLInputElement>(
+              `input[name="newArtistGenres"][value="${g}"]`,
+            );
+            if (el) el.checked = true;
+          }
+        }, 0);
+      }
+    } catch {
+      /* noop */
+    }
+    setHydrated(true);
+  }, []);
+
+  // állapot-változáskor mentés (csak a visszaállítás után)
+  useEffect(() => {
+    if (hydrated) saveDraft();
+  }, [hydrated, artist, artistNew, venue, venueNew, priceKind, saveDraft]);
+
   return (
-    <form action={action} className="flex flex-col gap-6">
+    <form
+      ref={formRef}
+      action={action}
+      onInput={() => hydrated && saveDraft()}
+      className="flex flex-col gap-6"
+    >
       {topError(state) && (
         <div className="rounded-xl bg-bad/10 px-3.5 py-2.5 text-[13px] text-bad">{topError(state)}</div>
       )}
@@ -317,13 +397,23 @@ export function SubmitEventForm() {
         <textarea name="description" rows={3} className={inputCls} />
       </label>
 
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded-full bg-ink px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#26262e] disabled:opacity-60"
-      >
-        {pending ? "Beküldés…" : "Koncert beküldése jóváhagyásra"}
-      </button>
+      {loggedIn ? (
+        <button
+          type="submit"
+          disabled={pending}
+          className="rounded-full bg-ink px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#26262e] disabled:opacity-60"
+        >
+          {pending ? "Beküldés…" : "Koncert beküldése jóváhagyásra"}
+        </button>
+      ) : (
+        <Link
+          href="/regisztracio?from=/koncert-bekuldese"
+          onClick={saveDraft}
+          className="rounded-full bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition hover:bg-[#26262e]"
+        >
+          Regisztrálj a beküldéshez → (az adataidat megőrizzük)
+        </Link>
+      )}
     </form>
   );
 }

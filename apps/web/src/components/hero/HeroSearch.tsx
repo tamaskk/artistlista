@@ -42,6 +42,8 @@ export function HeroSearch({ fullHeight = false }: { fullHeight?: boolean }) {
   const [mapEvents, setMapEvents] = useState<PublicEventCard[]>([]);
   const [loading, setLoading] = useState(true);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [focusedId, setFocusedId] = useState<string | null>(null);
+  const cardRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [sortOpen, setSortOpen] = useState(false);
 
   const updateFilters = useCallback(
@@ -120,6 +122,12 @@ export function HeroSearch({ fullHeight = false }: { fullHeight?: boolean }) {
     return () => io.disconnect();
   }, [loadMore]);
 
+  // térkép-pin kiválasztása → a lista odagörget a kártyához
+  useEffect(() => {
+    if (!focusedId) return;
+    cardRefs.current.get(focusedId)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [focusedId]);
+
   const rawEvents = useMemo(() => [...(data?.events ?? []), ...extra], [data?.events, extra]);
   // fizetős kiemelés: a promoted események mindig legfelül, tier szerint
   const events = useMemo(() => {
@@ -141,7 +149,12 @@ export function HeroSearch({ fullHeight = false }: { fullHeight?: boolean }) {
       <FilterBar filters={filters} onChange={updateFilters} view={view} onViewChange={setView} />
       <div className={`grid gap-6 lg:grid-cols-[55fr_45fr] ${heightClass}`}>
         <div className={`${view === "map" ? "block" : "hidden"} h-full lg:block`}>
-          <MapView events={allPinsEvents} hoveredId={hoveredId} onBboxChange={setBbox} />
+          <MapView
+            events={allPinsEvents}
+            hoveredId={hoveredId}
+            onBboxChange={setBbox}
+            onSelect={setFocusedId}
+          />
         </div>
         <div
           className={`${view === "list" ? "flex" : "hidden"} min-h-0 flex-col lg:flex`}
@@ -233,12 +246,19 @@ export function HeroSearch({ fullHeight = false }: { fullHeight?: boolean }) {
             ) : (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {events.map((e) => (
-                  <EventCard
+                  <div
                     key={e.id}
-                    event={e}
-                    onHover={setHoveredId}
-                    highlighted={hoveredId === e.id}
-                  />
+                    ref={(el) => {
+                      if (el) cardRefs.current.set(e.id, el);
+                      else cardRefs.current.delete(e.id);
+                    }}
+                  >
+                    <EventCard
+                      event={e}
+                      onHover={setHoveredId}
+                      highlighted={hoveredId === e.id || focusedId === e.id}
+                    />
+                  </div>
                 ))}
               </div>
             )}

@@ -5,7 +5,9 @@ import { authConfig } from "./auth.config";
 const { auth } = NextAuth(authConfig);
 
 // A web publikus — csak ezek az útvonalak igényelnek bejelentkezést.
-const PROTECTED_PREFIXES = ["/koncert-bekuldese", "/fiok"];
+// A /koncert-bekuldese SZÁNDÉKOSAN nem védett: a vendég is láthatja+kitöltheti
+// az űrlapot, csak a tényleges beküldéshez kell fiók (U3 vendég-vázlat).
+const PROTECTED_PREFIXES = ["/bekuldeseim", "/fiok"];
 
 export default auth((req) => {
   const { pathname } = req.nextUrl;
