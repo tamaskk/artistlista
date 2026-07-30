@@ -8,6 +8,7 @@ const NAV = [
   { href: "/esemenyek", label: "Események" },
   { href: "/eloadok", label: "Előadók" },
   { href: "/helyszinek", label: "Helyszínek" },
+  { href: "/neked", label: "Neked" },
   { href: "/kedvencek", label: "Kedvencek" },
   { href: "/koncert-bekuldese", label: "Koncert beküldése" },
 ];

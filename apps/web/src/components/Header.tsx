@@ -9,6 +9,7 @@ const nav = [
   { href: "/esemenyek", label: "Események" },
   { href: "/eloadok", label: "Előadók", isNew: true },
   { href: "/helyszinek", label: "Helyszínek" },
+  { href: "/neked", label: "Neked" },
   { href: "/kedvencek", label: "Kedvencek" },
 ];
 

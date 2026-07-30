@@ -10,7 +10,12 @@ import {
 } from "@artistlist/database";
 import { eventSchema, startOfToday, type ActionResult } from "@artistlist/types";
 import { canManageArtist, canManageEvent, requireUser } from "@/lib/session";
-import { notifyFavoritersOfCancellation, notifyFollowersOfEvent } from "@/lib/notify";
+import {
+  notifyFavoritersOfCancellation,
+  notifyFavoritersOfPriceDrop,
+  notifyFavoritersOfSoldOut,
+  notifyFollowersOfEvent,
+} from "@/lib/notify";
 
 function parseEventForm(formData: FormData) {
   return eventSchema.safeParse({
@@ -104,6 +109,8 @@ export async function updateEvent(
   }
 
   await connectDB();
+  // korábbi ár (ár-figyelő értesítéshez)
+  const before = await Event.findById(eventId).select("price status").lean();
   const denorm = await computeEventDenorm(data);
   await Event.updateOne(
     { _id: eventId },
@@ -129,6 +136,17 @@ export async function updateEvent(
       },
     },
   );
+  // olcsóbb lett? → kedvencelők értesítése (csak látható eseménynél)
+  const oldMin = before?.price?.min;
+  const newMin = data.priceMin ?? undefined;
+  if (
+    typeof oldMin === "number" &&
+    typeof newMin === "number" &&
+    newMin < oldMin &&
+    (data.status === "published" || data.status === "soldout")
+  ) {
+    await notifyFavoritersOfPriceDrop(eventId, oldMin, newMin);
+  }
   revalidatePath("/esemenyek");
   redirect("/esemenyek?mentve=1");
 }
@@ -175,7 +193,9 @@ export async function publishEvent(eventId: string): Promise<ActionResult> {
   return r;
 }
 export async function markSoldOut(eventId: string): Promise<ActionResult> {
-  return setStatus(eventId, "soldout");
+  const r = await setStatus(eventId, "soldout");
+  if (r.ok) await notifyFavoritersOfSoldOut(eventId);
+  return r;
 }
 export async function unpublishEvent(eventId: string): Promise<ActionResult> {
   return setStatus(eventId, "draft");

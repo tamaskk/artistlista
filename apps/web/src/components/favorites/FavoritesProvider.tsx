@@ -12,6 +12,8 @@ import { getFavorites } from "@/lib/favorites";
 
 const LS_KEY = "artistlist:favorites";
 
+type Kind = "city" | "genre";
+
 interface FavCtx {
   ready: boolean;
   loggedIn: boolean;
@@ -20,6 +22,10 @@ interface FavCtx {
   toggleFav: (slug: string) => void;
   isFollowing: (id: string) => boolean;
   toggleFollow: (id: string) => void;
+  followedCities: string[];
+  followedGenres: string[];
+  isFollowingTag: (kind: Kind, value: string) => boolean;
+  toggleTagFollow: (kind: Kind, value: string) => void;
 }
 
 const Ctx = createContext<FavCtx | null>(null);
@@ -45,6 +51,8 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   const [loggedIn, setLoggedIn] = useState(false);
   const [favs, setFavs] = useState<Set<string>>(new Set());
   const [follows, setFollows] = useState<Set<string>>(new Set());
+  const [cities, setCities] = useState<Set<string>>(new Set());
+  const [genres, setGenres] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     let cancelled = false;
@@ -72,6 +80,8 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
           }
           setFavs(serverFavs);
           setFollows(new Set<string>(d.follows ?? []));
+          setCities(new Set<string>(d.cities ?? []));
+          setGenres(new Set<string>(d.genres ?? []));
         } else {
           setFavs(new Set(getFavorites()));
         }
@@ -138,6 +148,30 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
     [loggedIn, router],
   );
 
+  const toggleTagFollow = useCallback(
+    (kind: Kind, value: string) => {
+      if (!loggedIn) {
+        const from = typeof window !== "undefined" ? window.location.pathname : "/neked";
+        router.push(`/belepes?from=${encodeURIComponent(from)}`);
+        return;
+      }
+      const setFn = kind === "city" ? setCities : setGenres;
+      setFn((prev) => {
+        const next = new Set(prev);
+        const on = !next.has(value);
+        if (on) next.add(value);
+        else next.delete(value);
+        fetch("/api/follows", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ kind, value, on }),
+        }).catch(() => {});
+        return next;
+      });
+    },
+    [loggedIn, router],
+  );
+
   return (
     <Ctx.Provider
       value={{
@@ -148,6 +182,10 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
         toggleFav,
         isFollowing: (id) => follows.has(id),
         toggleFollow,
+        followedCities: [...cities],
+        followedGenres: [...genres],
+        isFollowingTag: (kind, value) => (kind === "city" ? cities : genres).has(value),
+        toggleTagFollow,
       }}
     >
       {children}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageFrame } from "@/components/PageFrame";
 import { EventCard } from "@/components/EventCard";
+import { TagFollowButton } from "@/components/TagFollowButton";
 import { getCityEvents } from "@/lib/data";
 
 export const revalidate = 60;
@@ -29,9 +30,12 @@ export default async function CityPage(props: { params: Promise<{ city: string }
   return (
     <PageFrame>
       <div className="mt-8">
-        <h1 className="font-display text-[32px] font-bold tracking-tight">
-          Koncertek — {name}
-        </h1>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="font-display text-[32px] font-bold tracking-tight">
+            Koncertek — {name}
+          </h1>
+          <TagFollowButton kind="city" value={name} label={name} />
+        </div>
         <p className="mt-2 text-[15px] text-muted">
           {events.length} közelgő esemény.{" "}
           <Link href={`/esemenyek?varos=${name}`} className="font-semibold text-accent">

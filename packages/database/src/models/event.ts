@@ -45,6 +45,7 @@ const eventSchema = new Schema(
     stats: {
       views: { type: Number, default: 0 },
       saves: { type: Number, default: 0 },
+      ticketClicks: { type: Number, default: 0 }, // jegylink-kattintások (promoter analytics)
     },
     featured: { type: Boolean, default: false },
     // ── fizetős kiemelés (hirdetés) ─────────────────────────────────
@@ -70,7 +71,7 @@ export type EventDoc = InferSchemaType<typeof eventSchema> & {
   _id: mongoose.Types.ObjectId;
   location: { type: "Point"; coordinates: number[] };
   price: { kind: "free" | "paid" | "unknown"; min?: number; max?: number; currency: string };
-  stats: { views: number; saves: number };
+  stats: { views: number; saves: number; ticketClicks: number };
   promotion?: { tier: number; activeUntil?: Date; purchasedAt?: Date };
   createdAt: Date;
   updatedAt: Date;

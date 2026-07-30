@@ -18,11 +18,25 @@ export default async function StatsPage() {
 
   const events = await Event.find(scopeFilter)
     .sort({ "stats.views": -1 })
-    .limit(8)
+    .limit(10)
     .lean();
-  const totalViews = artists.reduce((s, a) => s + (a.stats?.views30d ?? 0), 0);
   const maxViews = Math.max(1, ...events.map((e) => e.stats?.views ?? 0));
   const nf = new Intl.NumberFormat("hu-HU");
+
+  // valós összesítők a scope összes eseményéből
+  const [agg] = await Event.aggregate([
+    { $match: scopeFilter },
+    {
+      $group: {
+        _id: null,
+        views: { $sum: "$stats.views" },
+        saves: { $sum: "$stats.saves" },
+        clicks: { $sum: "$stats.ticketClicks" },
+      },
+    },
+  ]);
+  const totals = { views: agg?.views ?? 0, saves: agg?.saves ?? 0, clicks: agg?.clicks ?? 0 };
+  const pct = (a: number, b: number) => (b > 0 ? Math.round((a / b) * 100) : 0);
 
   const sources = [
     { name: "ArtistList keresés", pct: 46, dot: "#4F46E5" },
@@ -34,15 +48,19 @@ export default async function StatsPage() {
   return (
     <>
       <PageHeader crumb="Statisztikák" title="Statisztikák" />
-      <Card className="mb-4">
-        <div className="flex items-baseline gap-3.5 pb-1.5">
-          <span className="text-[15px] font-semibold">Profilmegtekintések (30 nap)</span>
-          <span className="text-[22px] font-bold">{nf.format(totalViews)}</span>
-        </div>
-        <p className="text-[12.5px] text-muted">
-          Részletes idősoros bontás a v1-ben (esemény-szintű view-tracking).
-        </p>
-      </Card>
+      <div className="mb-4 grid grid-cols-3 gap-4">
+        {[
+          { label: "Megtekintés", value: totals.views, hint: "esemény-oldal" },
+          { label: "Kedvencelés", value: totals.saves, hint: "mentett esemény" },
+          { label: "Jegylink-katt.", value: totals.clicks, hint: `CTR ${pct(totals.clicks, totals.views)}%` },
+        ].map((m) => (
+          <Card key={m.label}>
+            <div className="text-[12.5px] text-muted">{m.label}</div>
+            <div className="text-[26px] font-bold">{nf.format(m.value)}</div>
+            <div className="text-[11.5px] text-faint">{m.hint}</div>
+          </Card>
+        ))}
+      </div>
       <div className="grid grid-cols-2 gap-4">
         <Card className="flex flex-col gap-3">
           <span className="pb-1 text-[15px] font-semibold">Legnézettebb események</span>
@@ -51,9 +69,12 @@ export default async function StatsPage() {
           ) : (
             events.map((e) => (
               <div key={String(e._id)} className="flex flex-col gap-1.5">
-                <div className="flex justify-between text-[13px]">
+                <div className="flex justify-between gap-2 text-[13px]">
                   <span className="truncate font-medium">{e.title}</span>
-                  <span className="shrink-0 text-muted">{nf.format(e.stats?.views ?? 0)}</span>
+                  <span className="shrink-0 text-muted">
+                    {nf.format(e.stats?.views ?? 0)} megt. · {nf.format(e.stats?.saves ?? 0)} ♥ ·{" "}
+                    {nf.format(e.stats?.ticketClicks ?? 0)} jegy
+                  </span>
                 </div>
                 <div className="h-1.5 overflow-hidden rounded-full bg-[#F0F0F8]">
                   <div

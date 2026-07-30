@@ -23,6 +23,10 @@ const userSchema = new Schema(
     // ── fiókos kedvencek + követés (eszközök közt szinkron) ──────────
     savedEventSlugs: { type: [String], default: [] },
     followedArtistIds: { type: [Schema.Types.ObjectId], ref: "Artist", default: [] },
+    followedCities: { type: [String], default: [] }, // város-nevek (követés → új koncert értesítő)
+    followedGenres: { type: [String], default: [] }, // műfaj-slugok
+    // naptár-feed (Google/Apple előfizetéshez) — titkos, per-user token
+    calendarToken: { type: String, index: true, sparse: true },
   },
   { timestamps: true },
 );

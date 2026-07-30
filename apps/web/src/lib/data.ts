@@ -1,4 +1,4 @@
-import { Artist, Event, Genre, Venue, connectDB } from "@artistlist/database";
+import { Artist, Event, Genre, User, Venue, connectDB } from "@artistlist/database";
 import { toEventCard } from "./serialize";
 import type { PublicEventCard } from "./public-types";
 
@@ -253,6 +253,70 @@ export async function getCityEvents(city: string): Promise<PublicEventCard[]> {
     .limit(60)
     .lean();
   return events.map(toEventCard);
+}
+
+/**
+ * Személyre szabott ajánló: a user követett előadói/városai/műfajai + a
+ * kedvencelt eseményekből kinyert érdeklődés alapján rangsorolt közelgő koncertek.
+ * Rangsor = hány jel talál (előadó/város/műfaj), majd időrend.
+ */
+export async function getRecommendations(
+  userId: string,
+  limit = 12,
+): Promise<{ events: PublicEventCard[]; hasSignals: boolean }> {
+  await connectDB();
+  const u = await User.findById(userId)
+    .select("followedArtistIds followedCities followedGenres savedEventSlugs")
+    .lean();
+  if (!u) return { events: [], hasSignals: false };
+
+  const artistIds = new Set((u.followedArtistIds ?? []).map(String));
+  const cities = new Set(u.followedCities ?? []);
+  const genres = new Set(u.followedGenres ?? []);
+  const savedSlugs = new Set(u.savedEventSlugs ?? []);
+
+  // hidegindítás: érdeklődés a kedvencelt eseményekből (előadó/város/műfaj)
+  if (savedSlugs.size) {
+    const favEvents = await Event.find({ slug: { $in: [...savedSlugs] } })
+      .select("artistIds city genres")
+      .lean();
+    for (const e of favEvents) {
+      (e.artistIds ?? []).forEach((a) => artistIds.add(String(a)));
+      if (e.city) cities.add(e.city);
+      (e.genres ?? []).forEach((g) => genres.add(g));
+    }
+  }
+
+  const hasSignals = artistIds.size + cities.size + genres.size > 0;
+  if (!hasSignals) return { events: [], hasSignals: false };
+
+  const or: Record<string, unknown>[] = [];
+  if (artistIds.size) or.push({ artistIds: { $in: [...artistIds] } });
+  if (cities.size) or.push({ city: { $in: [...cities] } });
+  if (genres.size) or.push({ genres: { $in: [...genres] } });
+
+  const docs = await Event.find({
+    status: { $in: ["published", "soldout"] },
+    startsAt: { $gte: new Date() },
+    slug: { $nin: [...savedSlugs] }, // amit már mentett, nem ajánljuk
+    $or: or,
+  })
+    .sort({ startsAt: 1 })
+    .limit(80)
+    .lean();
+
+  const scored = docs
+    .map((e) => {
+      let score = 0;
+      if ((e.artistIds ?? []).some((a) => artistIds.has(String(a)))) score += 3;
+      if (e.city && cities.has(e.city)) score += 2;
+      if ((e.genres ?? []).some((g) => genres.has(g))) score += 1;
+      return { e, score };
+    })
+    .sort((a, b) => b.score - a.score || +new Date(a.e.startsAt) - +new Date(b.e.startsAt))
+    .slice(0, limit);
+
+  return { events: scored.map((s) => toEventCard(s.e)), hasSignals: true };
 }
 
 export async function searchAll(q: string) {

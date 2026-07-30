@@ -12,6 +12,7 @@ import { EventCard } from "@/components/EventCard";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareButton } from "@/components/ShareButton";
 import { Thumb } from "@/components/Thumb";
+import { ViewTracker } from "@/components/ViewTracker";
 import { getEventBySlug, getUpcomingEvents } from "@/lib/data";
 
 export const revalidate = 60;
@@ -82,6 +83,7 @@ export default async function EventPage(props: { params: Promise<{ slug: string 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <ViewTracker slug={event.slug} />
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.6fr_1fr]">
         <div>
           <div className="relative h-[320px] overflow-hidden rounded-3xl">
@@ -187,7 +189,7 @@ export default async function EventPage(props: { params: Promise<{ slug: string 
             )}
             {!cancelled && !soldout && event.ticketUrl && (
               <a
-                href={event.ticketUrl}
+                href={`/api/events/${event.slug}/click`}
                 target="_blank"
                 rel="sponsored noopener"
                 className="mt-4 block rounded-full bg-ink py-3.5 text-center text-[15px] font-bold text-white transition hover:bg-[#26262e]"
