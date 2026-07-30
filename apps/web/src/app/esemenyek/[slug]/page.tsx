@@ -9,6 +9,7 @@ import {
 import { PageFrame } from "@/components/PageFrame";
 import { EventCard } from "@/components/EventCard";
 import { FavoriteButton } from "@/components/FavoriteButton";
+import { ShareButton } from "@/components/ShareButton";
 import { Thumb } from "@/components/Thumb";
 import { getEventBySlug, getUpcomingEvents } from "@/lib/data";
 
@@ -109,7 +110,10 @@ export default async function EventPage(props: { params: Promise<{ slug: string 
                 )}
               </div>
             </div>
-            <FavoriteButton slug={event.slug} className="mt-2 h-10 w-10" />
+            <div className="mt-2 flex items-center gap-2">
+              <ShareButton title={event.title} path={`/esemenyek/${event.slug}`} />
+              <FavoriteButton slug={event.slug} className="h-10 w-10" />
+            </div>
           </div>
 
           <div className="mt-4 flex flex-wrap gap-2">

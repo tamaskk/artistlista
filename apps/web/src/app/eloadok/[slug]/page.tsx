@@ -5,6 +5,7 @@ import { SOCIAL_KEYS } from "@artistlist/types";
 import { PageFrame } from "@/components/PageFrame";
 import { EventCard } from "@/components/EventCard";
 import { FollowButton } from "@/components/FollowButton";
+import { ShareButton } from "@/components/ShareButton";
 import { Thumb } from "@/components/Thumb";
 import { getArtistBySlug } from "@/lib/data";
 
@@ -78,7 +79,10 @@ export default async function ArtistPage(props: { params: Promise<{ slug: string
         <div>
           <div className="flex flex-wrap items-center justify-between gap-4">
             <h1 className="font-display text-[32px] font-bold tracking-tight">{artist.name}</h1>
-            <FollowButton artistId={String(artist._id)} />
+            <div className="flex items-center gap-2">
+              <ShareButton title={artist.name} path={`/eloadok/${artist.slug}`} />
+              <FollowButton artistId={String(artist._id)} />
+            </div>
           </div>
           <div className="mt-2 flex flex-wrap gap-2">
             {artist.genres.map((g: string) => (

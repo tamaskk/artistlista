@@ -37,3 +37,28 @@ export async function notifyFollowersOfEvent(eventId: string): Promise<void> {
     );
   }
 }
+
+/** Lemondáskor értesíti azokat, akik kedvencelték az eseményt (indokkal). */
+export async function notifyFavoritersOfCancellation(
+  eventId: string,
+  reason: string,
+): Promise<void> {
+  await connectDB();
+  const ev = await Event.findById(eventId).select("slug title venueName city");
+  if (!ev) return;
+  const fans = await User.find({ savedEventSlugs: ev.slug, status: "active" })
+    .select("email name")
+    .lean();
+  if (!fans.length) return;
+  const url = `${WEB_URL()}/esemenyek/${ev.slug}`;
+  for (const f of fans) {
+    await sendMail(
+      f.email,
+      `Elmarad: ${ev.title}`,
+      `Szia ${f.name}!\n\nSajnos elmarad egy koncert, amit mentettél:\n` +
+        `${ev.title}\n${ev.venueName}, ${ev.city}\n` +
+        (reason ? `Indok: ${reason}\n` : "") +
+        `\nRészletek: ${url}`,
+    );
+  }
+}

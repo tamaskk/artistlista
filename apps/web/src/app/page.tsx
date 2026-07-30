@@ -13,6 +13,7 @@ import {
   TrendingEvents,
 } from "@/components/sections/HomeSections";
 import { SubmitCta } from "@/components/sections/SubmitCta";
+import { NearbyTonight } from "@/components/sections/NearbyTonight";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +24,7 @@ export default function HomePage() {
         <HeroSearch />
       </Suspense>
       <FeaturedArtists />
+      <NearbyTonight />
       <SubmitCta />
       <QuickLists />
       <GenreGrid />

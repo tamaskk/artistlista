@@ -57,25 +57,6 @@ kedvencek, mock-fizetés, URL-only képfeltöltés, regex-keresés, egynyelvű.
 
 ---
 
-## 2. UX fejlesztések
-
-| # | Terület | Jelenlegi | Javaslat | Prioritás | Effort |
-|---|---------|-----------|----------|-----------|--------|
-| U1 | Kedvencek | localStorage, eszközhöz kötött | Fiókos kedvencek (a FAN loginhoz kötve) — eszközök közt szinkron, "értesíts ha közeleg" | **P1** | M |
-| U2 | Előadó-követés | nincs | "Követem" gomb az előadó-oldalon → értesítés új koncertnél | **P1** | M |
-| U3 | Onboarding a beküldéshez | login→regisztráció ugrás | Inline "vendég-vázlat": kitöltöd az űrlapot, csak beküldéskor kér regisztrációt (ne vessz el az adat) | P2 | M |
-| U4 | Üres állapotok | általános "nincs találat" | Kontextuális ajánlás ("nincs techno a hétvégén — nézd a pop-ot / tágíts városra") + gyors-szűrő gombok | P2 | S |
-| U5 | Térkép ↔ lista szinkron | van hover-highlight | Kattintás a listakártyán → térkép odaugrik/kinyit; térkép-pin → lista-scroll | P2 | M |
-| U6 | "Ma este a közelben" | nincs | Geolokáció-alapú gyorsnézet: mai + holnapi koncertek X km-en belül | **P1** | M |
-| U7 | Dátum-szűrő | preset chip-ek | Naptár-range választó + "épp most/ma este/hétvége" gyorsgombok | P3 | S |
-| U8 | Kiemelés-vásárlás felfedezés | külön menü + panel | Rendben, de: "előnézet" (hogy néz ki kiemelten) + tier-összehasonlító tábla checkout előtt | P3 | S |
-| U9 | Megosztás | nincs | "Megosztom" gomb event/előadó oldalon (Web Share API + OG-kép, lásd T-SEO) | P2 | S |
-| U10 | Beküldés-visszajelzés | siker-oldal | "Kövesd a beküldésed státuszát" — a beküldő lássa: jóváhagyásra vár / élesítve / elutasítva (indokkal) | P2 | M |
-| U11 | Akadálymentesség | részleges | Fókusz-állapotok, aria-label a térkép-markereken, kontraszt-audit, billentyűzet-navigáció a modálokban | P2 | M |
-| U12 | Elmaradt/telt ház | badge kész | Emlékeztető: ha kedvenced elmarad → értesítés (indokkal, már tároljuk) | P2 | S |
-
----
-
 ## 3. UI fejlesztések
 
 | # | Elem | Javaslat | Prioritás | Effort |

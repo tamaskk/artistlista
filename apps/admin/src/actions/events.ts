@@ -10,7 +10,7 @@ import {
 } from "@artistlist/database";
 import { eventSchema, startOfToday, type ActionResult } from "@artistlist/types";
 import { canManageArtist, canManageEvent, requireUser } from "@/lib/session";
-import { notifyFollowersOfEvent } from "@/lib/notify";
+import { notifyFavoritersOfCancellation, notifyFollowersOfEvent } from "@/lib/notify";
 
 function parseEventForm(formData: FormData) {
   return eventSchema.safeParse({
@@ -192,6 +192,8 @@ export async function cancelEvent(eventId: string, reason = ""): Promise<ActionR
     { _id: eventId },
     { $set: { status: "cancelled", cancelReason: reason.slice(0, 500) } },
   );
+  // a kedvencelők értesítése az elmaradásról (indokkal)
+  await notifyFavoritersOfCancellation(eventId, reason.slice(0, 500));
   revalidatePath("/esemenyek");
   revalidatePath("/vezerlopult");
   return { ok: true };

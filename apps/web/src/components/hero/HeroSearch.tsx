@@ -186,8 +186,49 @@ export function HeroSearch({ fullHeight = false }: { fullHeight?: boolean }) {
               </div>
             )}
             {events.length === 0 && !loading ? (
-              <div className="flex h-40 items-center justify-center rounded-card border border-dashed border-line-strong text-sm text-muted">
-                Nincs esemény ezekkel a szűrőkkel. Próbáld tágítani a keresést!
+              <div className="flex flex-col items-center justify-center gap-3 rounded-card border border-dashed border-line-strong px-6 py-10 text-center">
+                <div className="text-sm font-semibold">Nincs esemény ezekkel a szűrőkkel</div>
+                <div className="text-[13px] text-muted">Próbáld tágítani a keresést:</div>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {filters.genres.length > 0 && (
+                    <button
+                      onClick={() => updateFilters({ ...filters, genres: [] })}
+                      className="rounded-full border border-line-strong px-4 py-1.5 text-[13px] font-semibold hover:bg-chip"
+                    >
+                      Műfajszűrő törlése
+                    </button>
+                  )}
+                  {(filters.priceMax || filters.free) && (
+                    <button
+                      onClick={() => updateFilters({ ...filters, priceMax: null, free: false })}
+                      className="rounded-full border border-line-strong px-4 py-1.5 text-[13px] font-semibold hover:bg-chip"
+                    >
+                      Ár-szűrő törlése
+                    </button>
+                  )}
+                  {filters.city && (
+                    <button
+                      onClick={() => updateFilters({ ...filters, city: "" })}
+                      className="rounded-full border border-line-strong px-4 py-1.5 text-[13px] font-semibold hover:bg-chip"
+                    >
+                      Város-szűrő törlése
+                    </button>
+                  )}
+                  {filters.date !== "mind" && (
+                    <button
+                      onClick={() => updateFilters({ ...filters, date: "mind" })}
+                      className="rounded-full border border-line-strong px-4 py-1.5 text-[13px] font-semibold hover:bg-chip"
+                    >
+                      Összes dátum
+                    </button>
+                  )}
+                  <button
+                    onClick={() => updateFilters(DEFAULT_FILTERS)}
+                    className="rounded-full bg-ink px-4 py-1.5 text-[13px] font-semibold text-white hover:bg-[#26262e]"
+                  >
+                    Összes szűrő törlése
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

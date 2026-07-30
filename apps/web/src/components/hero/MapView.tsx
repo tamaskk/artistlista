@@ -35,6 +35,12 @@ function buildCardEl(
   const el = document.createElement("div");
   el.className = "map-marker";
   el.dataset.eventId = ev.id;
+  el.setAttribute("role", "button");
+  el.setAttribute("tabindex", "0");
+  el.setAttribute(
+    "aria-label",
+    `${ev.artistNames[0] ?? ev.title} — ${ev.venueName}${extra > 0 ? `, és további ${extra}` : ""}`,
+  );
 
   const card = document.createElement("div");
   card.className = extra > 0 ? "map-card map-card-stack" : "map-card";
@@ -91,6 +97,12 @@ function buildCardEl(
   el.addEventListener("click", (e) => {
     e.stopPropagation();
     onClick();
+  });
+  el.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onClick();
+    }
   });
   return el;
 }
