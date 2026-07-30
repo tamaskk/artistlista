@@ -171,12 +171,38 @@ async function setStatus(
 export async function publishEvent(eventId: string): Promise<ActionResult> {
   return setStatus(eventId, "published");
 }
-export async function cancelEvent(eventId: string): Promise<ActionResult> {
-  return setStatus(eventId, "cancelled");
-}
 export async function markSoldOut(eventId: string): Promise<ActionResult> {
   return setStatus(eventId, "soldout");
 }
 export async function unpublishEvent(eventId: string): Promise<ActionResult> {
   return setStatus(eventId, "draft");
+}
+
+/** Lemondás indokkal — az indok a publikus esemény-oldalon megjelenik. */
+export async function cancelEvent(eventId: string, reason = ""): Promise<ActionResult> {
+  const user = await requireUser();
+  if (!(await canManageEvent(user, eventId))) {
+    return { ok: false, error: "Nincs jogosultságod ehhez az eseményhez." };
+  }
+  await connectDB();
+  await Event.updateOne(
+    { _id: eventId },
+    { $set: { status: "cancelled", cancelReason: reason.slice(0, 500) } },
+  );
+  revalidatePath("/esemenyek");
+  revalidatePath("/vezerlopult");
+  return { ok: true };
+}
+
+/** Esemény végleges törlése. */
+export async function deleteEvent(eventId: string): Promise<ActionResult> {
+  const user = await requireUser();
+  if (!(await canManageEvent(user, eventId))) {
+    return { ok: false, error: "Nincs jogosultságod ehhez az eseményhez." };
+  }
+  await connectDB();
+  await Event.deleteOne({ _id: eventId });
+  revalidatePath("/esemenyek");
+  revalidatePath("/vezerlopult");
+  return { ok: true };
 }

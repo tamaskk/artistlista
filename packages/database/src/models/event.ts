@@ -29,6 +29,7 @@ const eventSchema = new Schema(
     ticketUrl: { type: String },
     description: { type: String, default: "" },
     image: { type: String, default: "" },
+    cancelReason: { type: String, default: "" }, // lemondás indoka (publikus)
     status: {
       type: String,
       enum: ["draft", "pending", "published", "cancelled", "soldout"],

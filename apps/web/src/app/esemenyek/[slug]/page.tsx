@@ -196,8 +196,13 @@ export default async function EventPage(props: { params: Promise<{ slug: string 
               </div>
             )}
             {cancelled && (
-              <div className="mt-4 rounded-full bg-bad/10 py-3 text-center text-sm font-bold text-bad">
+              <div className="mt-4 rounded-2xl bg-bad/10 px-4 py-3 text-center text-sm font-bold text-bad">
                 Az esemény elmarad
+                {event.cancelReason && (
+                  <div className="mt-1 text-[13px] font-normal text-bad/90">
+                    Indok: {event.cancelReason}
+                  </div>
+                )}
               </div>
             )}
             <a

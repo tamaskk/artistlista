@@ -1,12 +1,8 @@
 import Link from "next/link";
 import { Event, connectDB } from "@artistlist/database";
 import { formatEventDate } from "@artistlist/types";
-import {
-  cancelEvent,
-  duplicateEvent,
-  markSoldOut,
-  publishEvent,
-} from "@/actions/events";
+import { duplicateEvent, markSoldOut, publishEvent } from "@/actions/events";
+import { CancelEventButton, DeleteEventButton } from "@/components/EventActions";
 import { NewButton, PageHeader } from "@/components/PageHeader";
 import { Card, EventStatusBadge, InitialsAvatar } from "@/components/ui";
 import { getManagedArtists, requireUser } from "@/lib/session";
@@ -121,14 +117,10 @@ export default async function EventsPage(props: {
                       }}>
                         <RowButton title="Telt ház">◉</RowButton>
                       </form>
-                      <form action={async () => {
-                        "use server";
-                        await cancelEvent(id);
-                      }}>
-                        <RowButton title="Lemondás">✕</RowButton>
-                      </form>
+                      <CancelEventButton id={id} />
                     </>
                   )}
+                  <DeleteEventButton id={id} />
                 </div>
               </div>
             );
