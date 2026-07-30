@@ -4,8 +4,11 @@
  */
 import bcrypt from "bcryptjs";
 import { GENRES, slugify } from "@artistlist/types";
+import { loadRootEnv } from "./load-env";
 import { connectDB } from "./connect";
 import { Artist } from "./models/artist";
+
+loadRootEnv();
 import { Event } from "./models/event";
 import { Genre } from "./models/genre";
 import { Organization } from "./models/organization";

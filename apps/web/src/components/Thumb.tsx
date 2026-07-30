@@ -13,7 +13,15 @@ export function Thumb({
   className?: string;
 }) {
   if (src) {
-    return <img src={src} alt={alt} className={`object-cover ${className}`} />;
+    return (
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        className={`object-cover ${className}`}
+      />
+    );
   }
   return (
     <div className={`thumb-placeholder flex items-center justify-center ${className}`}>

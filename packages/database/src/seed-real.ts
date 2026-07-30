@@ -4,7 +4,10 @@
  * Futtatás: pnpm --filter @artistlist/database seed:real
  */
 import { slugify } from "@artistlist/types";
+import { loadRootEnv } from "./load-env";
 import { connectDB } from "./connect";
+
+loadRootEnv();
 import { Artist } from "./models/artist";
 import { Event } from "./models/event";
 import { Venue } from "./models/venue";

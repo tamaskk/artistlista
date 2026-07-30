@@ -4,10 +4,13 @@
  * használt helyszíneket, és minden user/organization fiókot (admin belépés).
  * Futtatás: pnpm --filter @artistlist/database cleanup
  */
+import { loadRootEnv } from "./load-env";
 import { connectDB } from "./connect";
 import { Artist } from "./models/artist";
 import { Event } from "./models/event";
 import { Venue } from "./models/venue";
+
+loadRootEnv();
 
 const REAL_SLUGS = [
   "azahriah", "carson-coma", "dzsudlo", "desh", "wellhello",

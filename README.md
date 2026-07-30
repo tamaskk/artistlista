@@ -1,54 +1,94 @@
-# ArtistList
+# Koncertlista
 
-Magyar előadó- és eseménykereső platform — monorepo (pnpm + Turborepo).
+Magyar előadó- és koncert-felfedező platform — koncertek térképen és listában,
+szűrhetően városra, dátumra, műfajra és árra. Publikus feltöltés jóváhagyással,
+előadó/menedzsment fiókok, fizetős kiemelés.
 
-| App / package | Mi ez |
-|---|---|
-| `apps/web` (:3000) | Publikus oldal: térkép+lista kereső, esemény-/előadó-/helyszínoldalak, SEO |
-| `apps/admin` (:3001) | Előadó/menedzsment admin: auth, CRUD, moderáció |
-| `packages/database` | Mongoose modellek + kapcsolat + seed (single source of truth) |
-| `packages/types` | Zod sémák, közös típusok, konstansok, formázók |
+- **Web** (publikus): [koncertlista.hu](https://koncertlista.hu)
+- **Admin**: [admin.koncertlista.hu](https://admin.koncertlista.hu)
 
-## Indítás
+## Tech stack
 
-```bash
-# 1. függőségek
-pnpm install
+- **Monorepo**: pnpm workspaces + Turborepo
+- **Web/Admin**: Next.js 15 (App Router, RSC, Server Actions), Tailwind CSS v4 (sötét mód a weben)
+- **DB**: MongoDB (Atlas prodban) + Mongoose (2dsphere/text indexek, denormalizált event-mezők)
+- **Auth**: Auth.js v5 (JWT, szerep-alapú: SUPER_ADMIN / MANAGER / ARTIST / FAN)
+- **Térkép**: MapLibre GL + OpenFreeMap (kulcs nélkül), Nominatim geokódolás
+- **Email**: Resend · **Rate limit**: Upstash (opcionális) · **Analytics**: Vercel
+- **Tesztek**: Vitest + GitHub Actions CI · **Hosting**: Vercel
 
-# 2. MongoDB (brew-val telepítve)
-brew services start mongodb-community
-# vagy előtérben: mongod --config /opt/homebrew/etc/mongod.conf
+## Struktúra
 
-# 3. env
-cp .env.example .env   # a defaultok lokálisan működnek
-
-# 4. demó adatok
-pnpm seed
-
-# 5. futtatás (mindkét app)
-pnpm dev
-# külön: pnpm dev:web / pnpm dev:admin
+```
+apps/
+  web/     – publikus oldal (térkép+lista, koncert-beküldés, kedvencek, követés)
+  admin/   – backoffice (auth, CRUD, moderáció, jóváhagyás, kiemelés)
+packages/
+  types/   – megosztott zod-sémák, konstansok, util-ok (+ Vitest tesztek)
+  database/– Mongoose modellek, connect, seed/cleanup scriptek, helperek
+  ui/      – közös UI-primitívek (Card, Field, Button…)
 ```
 
-## Demó belépések (seed után)
+## Fejlesztői indítás
+
+Előfeltétel: Node 20+, pnpm 10, elérhető MongoDB (lokálisan vagy Atlas).
+
+```bash
+pnpm install
+cp .env.example .env          # töltsd ki: MONGODB_URI, AUTH_SECRET
+npm run seed:real             # valós HU előadók/események (a .env MONGODB_URI-ja alapján)
+npm run dev                   # web :3000, admin :3001 (turbo)
+```
+
+Külön indítás: `npm run web` / `npm run admin`.
+
+### Környezeti változók (`.env`)
+
+| Változó | Leírás |
+|---|---|
+| `MONGODB_URI` | Mongo connection string (pl. Atlas `mongodb+srv://…/artistlist`) |
+| `AUTH_SECRET` | Auth.js titok — `openssl rand -base64 32` |
+| `NEXT_PUBLIC_WEB_URL` / `NEXT_PUBLIC_ADMIN_URL` | a két app publikus URL-je |
+| `RESEND_API_KEY`, `MAIL_FROM` | email (opcionális; nélküle konzolra ír) |
+| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | rate limit (opcionális; nélküle no-op) |
+| `CRON_SECRET` | a napi emlékeztető-cron védelme |
+
+## Scriptek
+
+| Parancs | Mit csinál |
+|---|---|
+| `npm run dev` | web + admin dev (turbo) |
+| `npm run build` | mindkét app build |
+| `npm run seed:real` | valós előadók/események (additív, upsert) |
+| `npm run cleanup` | kamu/demó adatok törlése (csak a valós marad) |
+| `pnpm --filter @artistlist/types test` | Vitest unit tesztek |
+
+## Kész funkciók (kivonat)
+
+- Térkép+lista kereső (fotó-pin köteg → modal), város-autocomplete, dátum-gyorschipek
+- Publikus **koncert-beküldés** (vendég-vázlat) → jóváhagyási lánc (superadmin / menedzsment / előadó)
+- **Fiókos kedvencek + előadó-követés** (eszközök közt szinkron), koncert-emlékeztető email
+- **Fizetős kiemelés** (5 tier, időtartam-kedvezmény) — *fizetés-integráció még hátravan*
+- Email (verifikáció, jóváhagyás, elmarad-értesítő), jelszó-reset/csere, rate limit, sötét mód, OG-képek
+- Vitest + GitHub Actions CI, Vercel Analytics, biztonsági headerek
+
+## Demó belépések (seed)
+
+> ⚠️ Éles indítás előtt **rotáld** a jelszavakat (Admin → Beállítások → Jelszó módosítása)!
 
 | Szerep | Email | Jelszó |
 |---|---|---|
 | SUPER_ADMIN | admin@artistlist.hu | admin1234 |
-| MANAGER (Northline Booking) | anna@northline.hu | titok1234 |
-| ARTIST (Szélcsend Zenekar) | szelcsend@example.hu | titok1234 |
+| MANAGER | anna@northline.hu | titok1234 |
+| ARTIST | szelcsend@example.hu | titok1234 |
 
-## Fontos működési jegyzetek
+## Működési jegyzetek
 
-- **Térkép:** MapLibre + OpenFreeMap (kulcs nélkül ingyenes). `NEXT_PUBLIC_MAPTILER_KEY` megadásával MapTiler stílusra vált.
-- **Email:** `RESEND_API_KEY` nélkül a levelek a szerverkonzolra íródnak, és a regisztráció auto-verify.
-- **Képek:** MVP-ben URL-alapú megadás (admin → előadó → Képek fül); üres képnél a design szerinti csíkozott placeholder jelenik meg. Cloudinary signed upload: v1.
-- **Geo-adat denormalizálva** az eseményen (location/city/venueName/genres) — helyszín-mentéskor `syncVenueToEvents` szinkronizál.
-- **Dátumok:** UTC-ben tárolva, megjelenítés Europe/Budapest szerint. Az admin `datetime-local` mezője a szerver helyi idejét használja parse-oláskor — élesben tegyél explicit TZ-konverziót a form-parse-ba.
-- **Moderáció:** új előadó `pending` → SUPER_ADMIN hagyja jóvá (`/admin/moderacio`); jóváhagyott fiók eseményei azonnal publikálhatók.
+- **Térkép:** MapLibre + OpenFreeMap (kulcs nélkül). `NEXT_PUBLIC_MAPTILER_KEY` megadásával MapTiler stílus.
+- **Dátumok:** UTC-ben tárolva, megjelenítés Europe/Budapest szerint.
+- **Geo-adat denormalizálva** az eseményen (location/city/venueName/genres); helyszín-/előadó-változáskor sync-helperek frissítik.
+- **Seed:** a scriptek betöltik a gyökér `.env`-et, így a `MONGODB_URI` szerinti (akár Atlas) DB-re futnak.
 
-## Ismert MVP-korlátok (doksi szerinti v1/v2 backlog)
+## Deploy
 
-Tiptap rich text (most textarea), Cloudinary upload, fan-fiók + szerveroldali kedvencek/követés,
-jelszó-visszaállítás, rate limit (Upstash), Sentry, dinamikus OG-képek, helyszín-összevonás UI,
-esemény-sorozatok, Atlas Search.
+Lásd a **[DEPLOY.md](./DEPLOY.md)** fájlt (Vercel + MongoDB Atlas + domain + env, lépésről lépésre).
