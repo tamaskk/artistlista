@@ -13,7 +13,7 @@ import { FavoriteButton } from "@/components/FavoriteButton";
 import { ShareButton } from "@/components/ShareButton";
 import { Thumb } from "@/components/Thumb";
 import { ViewTracker } from "@/components/ViewTracker";
-import { getEventBySlug, getUpcomingEvents } from "@/lib/data";
+import { getEventBySlug, getRelatedEvents } from "@/lib/data";
 
 export const revalidate = 60;
 
@@ -36,13 +36,11 @@ export default async function EventPage(props: { params: Promise<{ slug: string 
   const { event, lineup, venue } = data;
   const cancelled = event.status === "cancelled";
   const soldout = event.status === "soldout";
-  const related = (await getUpcomingEvents(30))
-    .filter(
-      (e) =>
-        e.slug !== event.slug &&
-        (e.city === event.city || e.artistNames.some((n) => event.artistNames.includes(n))),
-    )
-    .slice(0, 4);
+  const { sameArtist, sameVenue } = await getRelatedEvents({
+    slug: event.slug,
+    artistIds: event.artistIds,
+    venueId: event.venueId,
+  });
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -243,13 +241,26 @@ export default async function EventPage(props: { params: Promise<{ slug: string 
         </aside>
       </div>
 
-      {related.length > 0 && (
+      {sameArtist.length > 0 && (
         <section className="mt-16">
           <h2 className="mb-5 font-display text-[26px] font-bold tracking-tight">
-            Kapcsolódó események
+            Ugyanez az előadó máshol
           </h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {related.map((e) => (
+            {sameArtist.map((e) => (
+              <EventCard key={e.id} event={e} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {sameVenue.length > 0 && (
+        <section className="mt-12">
+          <h2 className="mb-5 font-display text-[26px] font-bold tracking-tight">
+            {event.venueName} — következő események
+          </h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {sameVenue.map((e) => (
               <EventCard key={e.id} event={e} />
             ))}
           </div>

@@ -174,6 +174,40 @@ export async function getEventBySlug(slug: string) {
   return { event, lineup, venue };
 }
 
+/**
+ * „Hasonló koncertek" az esemény-oldalra: ugyanaz az előadó máshol +
+ * ugyanaz a helyszín legközelebb (a helyszín-listából kiszűrve az előadó-átfedést).
+ */
+export async function getRelatedEvents(ev: {
+  slug: string;
+  artistIds: unknown[];
+  venueId: unknown;
+}): Promise<{ sameArtist: PublicEventCard[]; sameVenue: PublicEventCard[] }> {
+  await connectDB();
+  const now = new Date();
+  const base = { status: { $in: ["published", "soldout"] }, startsAt: { $gte: now } };
+
+  const sameArtistDocs = ev.artistIds?.length
+    ? await Event.find({ ...base, slug: { $ne: ev.slug }, artistIds: { $in: ev.artistIds } })
+        .sort({ startsAt: 1 })
+        .limit(4)
+        .lean()
+    : [];
+  const excludeSlugs = new Set([ev.slug, ...sameArtistDocs.map((e) => e.slug)]);
+
+  const sameVenueDocs = ev.venueId
+    ? await Event.find({ ...base, venueId: ev.venueId, slug: { $nin: [...excludeSlugs] } })
+        .sort({ startsAt: 1 })
+        .limit(4)
+        .lean()
+    : [];
+
+  return {
+    sameArtist: sameArtistDocs.map(toEventCard),
+    sameVenue: sameVenueDocs.map(toEventCard),
+  };
+}
+
 export async function getArtistBySlug(slug: string) {
   await connectDB();
   const artist = await Artist.findOne({ slug, status: "published" }).lean();
