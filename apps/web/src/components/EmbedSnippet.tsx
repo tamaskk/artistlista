@@ -31,9 +31,9 @@ export function EmbedSnippet({ webUrl, slug, name }: { webUrl: string; slug: str
           <p className="text-[13px] text-muted">
             Tedd ki a fellépéseket a saját weboldaladra — másold be ezt a kódot.
           </p>
-          <pre className="max-h-32 overflow-auto rounded-lg bg-ink/5 p-3 text-[11px] leading-relaxed">
+          <code className="block max-h-40 overflow-auto whitespace-pre-wrap break-all rounded-lg border border-line bg-canvas p-3 font-mono text-[11px] leading-relaxed text-ink-soft">
             {code}
-          </pre>
+          </code>
           <button
             onClick={copy}
             className="rounded-lg bg-ink px-3 py-2 text-[13px] font-medium text-white"

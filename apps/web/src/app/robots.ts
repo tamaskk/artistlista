@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const BASE = process.env.NEXT_PUBLIC_WEB_URL || "http://localhost:3000";
+const BASE = process.env.NEXT_PUBLIC_WEB_URL || "https://koncertlista.hu";
 
 export default function robots(): MetadataRoute.Robots {
   return {

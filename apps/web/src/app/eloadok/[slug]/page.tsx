@@ -13,7 +13,7 @@ import { getArtistBySlug } from "@/lib/data";
 
 export const revalidate = 60;
 
-const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || "http://localhost:3000";
+const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || "https://koncertlista.hu";
 
 const SOCIAL_LABELS: Record<string, string> = {
   website: "Weboldal",

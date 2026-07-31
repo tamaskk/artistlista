@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { Artist, Event, Venue, connectDB } from "@artistlist/database";
 
-const BASE = process.env.NEXT_PUBLIC_WEB_URL || "http://localhost:3000";
+const BASE = process.env.NEXT_PUBLIC_WEB_URL || "https://koncertlista.hu";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   await connectDB();
