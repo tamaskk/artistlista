@@ -122,7 +122,7 @@ export default async function EventPage(props: { params: Promise<{ slug: string 
               <Link
                 key={g}
                 href={`/esemenyek?mufaj=${g}`}
-                className="rounded-full bg-chip px-3.5 py-1.5 text-xs font-semibold text-ink-soft hover:bg-canvas"
+                className="rounded-full bg-chip px-3.5 py-1.5 text-xs font-semibold text-ink-soft transition hover:bg-line-strong"
               >
                 {g}
               </Link>
@@ -190,7 +190,7 @@ export default async function EventPage(props: { params: Promise<{ slug: string 
                 href={`/api/events/${event.slug}/click`}
                 target="_blank"
                 rel="sponsored noopener"
-                className="mt-4 block rounded-full bg-ink py-3.5 text-center text-[15px] font-bold text-white transition hover:bg-[#26262e]"
+                className="mt-4 block rounded-full bg-ink py-3.5 text-center text-[15px] font-bold text-white transition hover:bg-ink-hover"
               >
                 Jegyvásárlás ↗
               </a>

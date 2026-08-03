@@ -24,7 +24,7 @@ export function NewButton({ href, label }: { href: string; label: string }) {
   return (
     <Link
       href={href}
-      className="rounded-full bg-ink px-[18px] py-2.5 text-[13.5px] font-semibold text-white transition hover:bg-[#26262E]"
+      className="rounded-full bg-ink px-[18px] py-2.5 text-[13.5px] font-semibold text-white transition hover:bg-ink-hover"
     >
       ＋ {label}
     </Link>

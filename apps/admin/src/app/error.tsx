@@ -21,7 +21,7 @@ export default function Error({
         {error?.digest && <p className="mt-2 text-[11px] text-faint">Azonosító: {error.digest}</p>}
         <button
           onClick={reset}
-          className="mt-6 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#26262e]"
+          className="mt-6 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white hover:bg-ink-hover"
         >
           Újrapróbálom
         </button>

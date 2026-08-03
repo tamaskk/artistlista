@@ -237,7 +237,7 @@ export function HeroSearch({ fullHeight = false }: { fullHeight?: boolean }) {
                   )}
                   <button
                     onClick={() => updateFilters(DEFAULT_FILTERS)}
-                    className="rounded-full bg-ink px-4 py-1.5 text-[13px] font-semibold text-white hover:bg-[#26262e]"
+                    className="rounded-full bg-ink px-4 py-1.5 text-[13px] font-semibold text-white hover:bg-ink-hover"
                   >
                     Összes szűrő törlése
                   </button>

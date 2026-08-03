@@ -32,7 +32,7 @@ export function TagFollowButton({
       className={`inline-flex items-center gap-1.5 rounded-full border font-medium transition ${pad} ${
         on
           ? "border-transparent bg-ink text-white"
-          : "border-line bg-surface hover:bg-ink/5"
+          : "border-line bg-surface hover:bg-chip"
       } disabled:opacity-50`}
       aria-pressed={on}
     >

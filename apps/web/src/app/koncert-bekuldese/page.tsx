@@ -35,7 +35,7 @@ export default async function SubmitPage({
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <Link
                 href="/koncert-bekuldese"
-                className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#26262e]"
+                className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white hover:bg-ink-hover"
               >
                 Új koncert beküldése
               </Link>

@@ -53,7 +53,7 @@ export default async function EditArtistPage(props: { params: Promise<{ id: stri
                   "use server";
                   await submitArtistForReview(id);
                 }}>
-                <button className="rounded-full bg-ink px-[18px] py-2.5 text-[13.5px] font-semibold text-white transition hover:bg-[#26262E]">
+                <button className="rounded-full bg-ink px-[18px] py-2.5 text-[13.5px] font-semibold text-white transition hover:bg-ink-hover">
                   Beküldés moderációra
                 </button>
               </form>

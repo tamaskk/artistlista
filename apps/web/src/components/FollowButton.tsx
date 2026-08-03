@@ -20,7 +20,7 @@ export function FollowButton({
       className={`rounded-full px-5 py-2.5 text-sm font-semibold transition disabled:opacity-60 ${
         on
           ? "bg-accent text-white hover:bg-accent-deep"
-          : "border-[1.5px] border-ink bg-ink text-white hover:bg-[#26262e]"
+          : "border-[1.5px] border-ink bg-ink text-white hover:bg-ink-hover"
       } ${className}`}
     >
       {on ? "✓ Követed" : "+ Követés"}

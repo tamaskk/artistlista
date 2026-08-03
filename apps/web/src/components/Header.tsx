@@ -50,7 +50,7 @@ export function Header({ active }: { active?: string }) {
         </a>
         <Link
           href="/koncert-bekuldese"
-          className="hidden rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#26262e] sm:block"
+          className="hidden rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ink-hover sm:block"
         >
           Koncert beküldése
         </Link>

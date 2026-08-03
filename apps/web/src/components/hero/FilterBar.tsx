@@ -115,7 +115,7 @@ export function FilterBar({
         ) : (
           <button
             onClick={() => setCityInput(true)}
-            className="flex h-[38px] items-center gap-2 rounded-full bg-ink px-4 text-sm font-semibold text-white transition hover:bg-[#26262e]"
+            className="flex h-[38px] items-center gap-2 rounded-full bg-ink px-4 text-sm font-semibold text-white transition hover:bg-ink-hover"
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2">
               <circle cx="11" cy="11" r="7" />

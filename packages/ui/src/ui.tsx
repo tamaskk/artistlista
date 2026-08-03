@@ -32,7 +32,7 @@ export function PrimaryButton({
   return (
     <button
       {...props}
-      className={`rounded-full bg-ink px-[18px] py-2.5 text-[13.5px] font-semibold text-white transition hover:bg-[#26262E] disabled:opacity-50 ${props.className ?? ""}`}
+      className={`rounded-full bg-ink px-[18px] py-2.5 text-[13.5px] font-semibold text-white transition hover:bg-ink-hover disabled:opacity-50 ${props.className ?? ""}`}
     >
       {children}
     </button>

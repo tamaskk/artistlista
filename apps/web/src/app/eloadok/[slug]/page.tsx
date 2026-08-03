@@ -5,15 +5,12 @@ import { SOCIAL_KEYS } from "@artistlist/types";
 import { PageFrame } from "@/components/PageFrame";
 import { EventCard } from "@/components/EventCard";
 import { FollowButton } from "@/components/FollowButton";
-import { EmbedSnippet } from "@/components/EmbedSnippet";
 import { ShareButton } from "@/components/ShareButton";
 import { Thumb } from "@/components/Thumb";
 import { VerifiedBadge } from "@/components/VerifiedBadge";
 import { getArtistBySlug } from "@/lib/data";
 
 export const revalidate = 60;
-
-const WEB_URL = process.env.NEXT_PUBLIC_WEB_URL || "https://koncertlista.hu";
 
 const SOCIAL_LABELS: Record<string, string> = {
   website: "Weboldal",
@@ -96,7 +93,7 @@ export default async function ArtistPage(props: { params: Promise<{ slug: string
               <Link
                 key={g}
                 href={`/esemenyek?mufaj=${g}`}
-                className="rounded-full bg-chip px-3.5 py-1.5 text-xs font-semibold text-ink-soft hover:bg-canvas"
+                className="rounded-full bg-chip px-3.5 py-1.5 text-xs font-semibold text-ink-soft transition hover:bg-line-strong"
               >
                 {g}
               </Link>
@@ -191,7 +188,6 @@ export default async function ArtistPage(props: { params: Promise<{ slug: string
               </div>
             </div>
           </div>
-          <EmbedSnippet webUrl={WEB_URL} slug={artist.slug} name={artist.name} />
         </aside>
       </div>
 

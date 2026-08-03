@@ -48,7 +48,7 @@ export function Footer() {
               placeholder="E-mail címed"
               className="min-w-0 flex-1 rounded-full border-[1.5px] border-line-strong px-4 py-2.5 text-sm outline-none focus:border-accent"
             />
-            <button className="shrink-0 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#26262e]">
+            <button className="shrink-0 rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ink-hover">
               Feliratkozom
             </button>
           </form>

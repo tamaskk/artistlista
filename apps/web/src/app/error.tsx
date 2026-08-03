@@ -28,7 +28,7 @@ export default function Error({
         <div className="mt-6 flex items-center justify-center gap-3">
           <button
             onClick={reset}
-            className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#26262e]"
+            className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white hover:bg-ink-hover"
           >
             Újrapróbálom
           </button>

@@ -24,7 +24,7 @@ export default async function SearchPage(props: { searchParams: Promise<{ q?: st
             placeholder="Előadó, esemény vagy helyszín…"
             className="min-w-0 flex-1 rounded-full border-[1.5px] border-line-strong px-5 py-2.5 text-sm outline-none focus:border-accent"
           />
-          <button className="shrink-0 rounded-full bg-ink px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#26262e]">
+          <button className="shrink-0 rounded-full bg-ink px-6 py-2.5 text-sm font-semibold text-white hover:bg-ink-hover">
             Keresés
           </button>
         </form>

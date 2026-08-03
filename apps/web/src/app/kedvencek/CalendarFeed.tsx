@@ -40,7 +40,7 @@ export function CalendarFeed({ url }: { url: string }) {
             </code>
             <button
               onClick={copy}
-              className="rounded-lg border border-line px-3 py-2 text-[13px] font-medium hover:bg-ink/5"
+              className="rounded-lg border border-line px-3 py-2 text-[13px] font-medium hover:bg-chip"
             >
               Másolás
             </button>

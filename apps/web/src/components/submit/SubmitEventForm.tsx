@@ -401,7 +401,7 @@ export function SubmitEventForm({ loggedIn = true }: { loggedIn?: boolean }) {
         <button
           type="submit"
           disabled={pending}
-          className="rounded-full bg-ink px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-[#26262e] disabled:opacity-60"
+          className="rounded-full bg-ink px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-ink-hover disabled:opacity-60"
         >
           {pending ? "Beküldés…" : "Koncert beküldése jóváhagyásra"}
         </button>
@@ -409,7 +409,7 @@ export function SubmitEventForm({ loggedIn = true }: { loggedIn?: boolean }) {
         <Link
           href="/regisztracio?from=/koncert-bekuldese"
           onClick={saveDraft}
-          className="rounded-full bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition hover:bg-[#26262e]"
+          className="rounded-full bg-ink px-6 py-3.5 text-center text-sm font-semibold text-white transition hover:bg-ink-hover"
         >
           Regisztrálj a beküldéshez → (az adataidat megőrizzük)
         </Link>

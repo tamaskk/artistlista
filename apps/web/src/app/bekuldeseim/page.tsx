@@ -30,7 +30,7 @@ export default async function MySubmissionsPage() {
           <h1 className="font-display text-[28px] font-bold tracking-tight">Beküldéseim</h1>
           <Link
             href="/koncert-bekuldese"
-            className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#26262e]"
+            className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ink-hover"
           >
             + Új beküldés
           </Link>

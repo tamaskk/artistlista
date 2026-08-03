@@ -242,7 +242,7 @@ export function CtaBand() {
       <div className="relative flex shrink-0 items-center gap-3.5">
         <a
           href={`${ADMIN_URL}/register`}
-          className="rounded-full bg-surface px-7 py-3.5 text-[15px] font-bold text-fg transition hover:bg-canvas"
+          className="rounded-full bg-surface px-7 py-3.5 text-[15px] font-bold text-fg transition hover:bg-chip"
         >
           Ingyenes regisztráció
         </a>

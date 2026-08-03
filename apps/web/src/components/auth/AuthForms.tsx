@@ -53,7 +53,7 @@ function SubmitButton({ pending, children }: { pending: boolean; children: React
     <button
       type="submit"
       disabled={pending}
-      className="mt-1 w-full rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#26262e] disabled:opacity-60"
+      className="mt-1 w-full rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white transition hover:bg-ink-hover disabled:opacity-60"
     >
       {pending ? "Egy pillanat…" : children}
     </button>

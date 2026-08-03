@@ -25,7 +25,7 @@ export function FollowManager() {
                 onClick={() => toggleTagFollow("genre", g.slug)}
                 aria-pressed={on}
                 className={`rounded-full border px-3.5 py-1.5 text-[13px] font-medium transition ${
-                  on ? "border-transparent bg-ink text-white" : "border-line bg-surface hover:bg-ink/5"
+                  on ? "border-transparent bg-ink text-white" : "border-line bg-surface hover:bg-chip"
                 } disabled:opacity-50`}
               >
                 {on ? "✓ " : ""}

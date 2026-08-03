@@ -56,7 +56,7 @@ export function NearbyTonight() {
         {state !== "loading" && (
           <button
             onClick={find}
-            className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#26262e]"
+            className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-ink-hover"
           >
             {state === "done" ? "Frissítés" : "Mutasd a közelieket"}
           </button>

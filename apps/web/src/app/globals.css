@@ -9,6 +9,7 @@
   --color-surface: #ffffff;
   --color-fg: #0b0b0f;
   --color-ink: #0b0b0f;
+  --color-ink-hover: #26262e; /* bg-ink gombok hover — világosban kicsit világosabb */
   --color-ink-soft: #4b4d5c;
   --color-muted: #71748a;
   --color-faint: #9a9db4;
@@ -52,6 +53,7 @@ body {
   --color-surface: #191b24;
   --color-fg: #f1f2f8;
   --color-ink: #2a2c38; /* bg-ink gombok/badge-ek — kicsit világosabb a surface-nél */
+  --color-ink-hover: #3a3d4c; /* sötétben a hover VILÁGOSÍT (nem sötétít) */
   --color-ink-soft: #c4c6d6;
   --color-muted: #9296ac;
   --color-faint: #6a6d84;

@@ -24,7 +24,7 @@ export function FavoriteButton({ slug, className = "" }: { slug: string; classNa
         }
         toast(willSave ? "Mentve a kedvencekbe ★" : "Eltávolítva a kedvencekből");
       }}
-      className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-chip text-fg ring-1 ring-fg/10 transition hover:bg-canvas ${className}`}
+      className={`flex h-[30px] w-[30px] items-center justify-center rounded-full bg-chip text-fg ring-1 ring-fg/10 transition hover:bg-accent/10 hover:text-accent ${className}`}
     >
       <svg
         className={pop ? "animate-heart" : ""}
